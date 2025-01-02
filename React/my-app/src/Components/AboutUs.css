@@ -1,0 +1,19 @@
+.ms-4 {
+  margin-left: 1rem !important;
+}
+
+.me-2 {
+  margin-right: 0.5rem !important;
+}
+
+.active-card .card {
+  box-shadow: 7px 7px 40px #ed9500;
+  border: 2px solid wheat;
+  transform: scale(1.05);
+  transition: all 0.3s ease;
+}
+
+.card-header{
+  font-weight: 650;
+  font-size: 1.5rem;
+}
