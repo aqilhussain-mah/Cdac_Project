@@ -7,7 +7,7 @@ import AboutUs from './Components/AboutUs';
 import MyBooking from './Components/MyBooking';
 import Profile from './Components/Profile';
 import Login from './Components/Login';
-import UserRegister from './Components/UserRegister'
+import UserRegister from './Components/UserRegistration'
 import ManagerRegister from './Components/ManagerRegister'
 
 
