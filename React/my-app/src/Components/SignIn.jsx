@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 const SignIn = () => {
     return (
         <div className="signin-container">
-            <div className="constainer-fluid">
+            <div className="container-fluid">
                 <form action="">
                     <h1>Sign In</h1>
                     <div>
@@ -14,23 +14,27 @@ const SignIn = () => {
                     </div>
                     <div>
                         <label htmlFor="">PASSWORD</label><br />
-                        <input type="text" name="" id="" placeholder="Password" />
+                        <input type="password" name="" id="" placeholder="Password" />
                     </div>
                     <div className="d-flex justify-content-center">
                         <button type="submit">Sign In</button>
                     </div>
-                    <div className="row">
-                        <div className="col d-flex justify-content-left">
-                            Reset password
+                    <div className="row ">
+                        <div className="col d-flex justify-content-start">
+                            <NavLink to="ResetPassword" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+                                Reset password
+                            </NavLink>
                         </div>
-                        <div className="col d-flex justify-content-end">
-                            <NavLink to="/forgotpassword" className="nav-link" activeClassName="active">
+                        <div className="col d-flex justify-content-end text-end">
+                            <NavLink to="ForgotPassword" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
                                 Forgot password
                             </NavLink>
                         </div>
                     </div>
                     <div className="d-flex justify-content-center mt-3">
-                        <h5>New user register here</h5>
+                        <NavLink to="Register" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+                            <h5>New user register here</h5>
+                        </NavLink>
                     </div>
                     <div className="d-flex justify-content-center">
                         <i className="bi bi-hand-index" />

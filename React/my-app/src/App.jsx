@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes,useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import './App.css'
 import Home from './Components/Home'
 import NavigationBar from './Components/NavigationBar';
@@ -7,6 +7,8 @@ import AboutUs from './Components/AboutUs';
 import MyBooking from './Components/MyBooking';
 import Profile from './Components/Profile';
 import Login from './Components/Login';
+import UserRegister from './Components/UserRegister'
+import ManagerRegister from './Components/ManagerRegister'
 
 
 function App() {
@@ -24,7 +26,9 @@ function App() {
         <Route path='/ContactUs' element={<AboutUs spotlight={spotlight} />} ></Route>
         <Route path='/MyBooking' element={<MyBooking />}></Route>
         <Route path='/Profile' element={<Profile />}></Route>
-        <Route path='/Login' element={<Login />}></Route>
+        <Route path='/Login/*' element={<Login />}></Route>
+        <Route path='/UserRegister' element={<UserRegister />}></Route>
+        <Route path='/ManagerRegister' element={<ManagerRegister />}></Route>
       </Routes>
 
     </div>
