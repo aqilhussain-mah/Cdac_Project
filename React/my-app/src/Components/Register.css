@@ -1,0 +1,9 @@
+.register-container {
+    padding: 5%;
+}
+
+.card {
+    min-height: 40vh;
+    margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}

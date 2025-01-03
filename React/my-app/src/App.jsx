@@ -7,6 +7,7 @@ import AboutUs from './Components/AboutUs';
 import MyBooking from './Components/MyBooking';
 import Profile from './Components/Profile';
 import Login from './Components/Login';
+import Register from "./Components/Register"
 import UserRegister from './Components/UserRegistration'
 import ManagerRegister from './Components/ManagerRegister'
 
@@ -29,6 +30,7 @@ function App() {
         <Route path='/Login/*' element={<Login />}></Route>
         <Route path='/UserRegister' element={<UserRegister />}></Route>
         <Route path='/ManagerRegister' element={<ManagerRegister />}></Route>
+        <Route path="/Register" element={<Register />}></Route>
       </Routes>
 
     </div>

@@ -4,7 +4,6 @@ import "./Login.css";
 import SignIn from "./SignIn"
 import ForgotPassword from "./ForgotPassword"
 import ResetPassword from "./ResetPassword"
-import Register from "./Register"
 
 
 const Login = () => {
@@ -21,7 +20,6 @@ const Login = () => {
                                 <Route path="/" element={<SignIn />}></Route>
                                 <Route path="ForgotPassword" element={<ForgotPassword />}></Route>
                                 <Route path="ResetPassword" element={<ResetPassword />}></Route>
-                                <Route path="Register" element={<Register />}></Route>
                             </Routes>
 
                             <Outlet />

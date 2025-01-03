@@ -32,7 +32,7 @@ const SignIn = () => {
                         </div>
                     </div>
                     <div className="d-flex justify-content-center mt-3">
-                        <NavLink to="Register" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+                        <NavLink to="/Register" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
                             <h5>New user register here</h5>
                         </NavLink>
                     </div>

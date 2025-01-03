@@ -18,22 +18,22 @@ const NavigationBar = () => {
                         </div>
                         <div className="me-4">
                             <NavLink to="/Location" className="nav-link">
-                                <i className="bi bi-geo-alt"></i> Locations
+                                <i className="bi bi-info-circle"></i> Instructions
                             </NavLink>
                         </div>
                         <div className="me-4">
                             <NavLink to="/About" className="nav-link">
-                                About
+                                <i className="bi bi-people"></i>About
                             </NavLink>
                         </div>
                         <div className="me-4">
                             <NavLink to="/ContactUs" className="nav-link">
-                                Contact
+                                <i className="bi bi-envelope"></i>Contact
                             </NavLink>
                         </div>
                         <div className="me-4">
                             <NavLink to="/MyBooking" className="nav-link">
-                                My Bookings
+                            <i className="bi bi-journal-bookmark"></i> My Bookings
                             </NavLink>
                         </div>
                     </div>
