@@ -9,8 +9,11 @@ import Profile from './Components/Profile';
 import Login from './Components/Login';
 import Register from "./Components/Register"
 import UserRegister from './Components/UserRegistration'
-import ManagerRegister from './Components/ManagerRegister'
-import Booking from './Booking';
+// import ManagerRegister from './Components/ManagerRegister'
+import AdminRegistrationForm from './Components/AdminRegistrationForm'
+import Booking from './Components/Booking';
+import UserRegistration from './Components/UserRegistration';
+
 
 
 function App() {
@@ -21,17 +24,16 @@ function App() {
   return (
     <div className='App'>
       <NavigationBar />
-      <Booking />
       <Routes>
-        <Route path='/Home' element={<Home />}></Route>
+        <Route path='/' element={<Home />}></Route>
         <Route path='/Location' element={<Location />}></Route>
         <Route path='/About' element={<AboutUs spotlight={spotlight} />} ></Route>
         <Route path='/ContactUs' element={<AboutUs spotlight={spotlight} />} ></Route>
         <Route path='/MyBooking' element={<MyBooking />}></Route>
         <Route path='/Profile' element={<Profile />}></Route>
         <Route path='/Login/*' element={<Login />}></Route>
-        <Route path='/UserRegistration' element={<UserRegister />}></Route>
-        <Route path='/ManagerRegister' element={<ManagerRegister />}></Route>
+        <Route path='/UserRegistration' element={<UserRegistration />}></Route>
+        <Route path='/adminRegister' element={<AdminRegistrationForm></AdminRegistrationForm>}></Route>
         <Route path="/Register" element={<Register />}></Route>
       </Routes>
 
