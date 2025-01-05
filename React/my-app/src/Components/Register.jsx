@@ -19,7 +19,7 @@ const Register = () => {
                         We look forward to helping you create unforgettable moments!
                     </div>
                     <div className="d-flex justify-content-center mt-4">
-                        <NavLink to="/UserRegister" className="nav-link">
+                        <NavLink to="/UserRegistration" className="nav-link">
                             Register
                         </NavLink>
                     </div>

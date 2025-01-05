@@ -11,7 +11,7 @@ const NavigationBar = () => {
                 <div className="row">
                     <div className="col-9 d-flex justify-content-start">
                         <div className="me-4 ps-4">
-                            <NavLink to="/" className="nav-link">
+                            <NavLink to="/Home" className="nav-link">
                                 <i className="bi bi-house"></i> Home
                             </NavLink>
 

@@ -10,6 +10,7 @@ import Login from './Components/Login';
 import Register from "./Components/Register"
 import UserRegister from './Components/UserRegistration'
 import ManagerRegister from './Components/ManagerRegister'
+import Booking from './Booking';
 
 
 function App() {
@@ -20,15 +21,16 @@ function App() {
   return (
     <div className='App'>
       <NavigationBar />
+      <Booking />
       <Routes>
-        <Route path='/' element={<Home />}></Route>
+        <Route path='/Home' element={<Home />}></Route>
         <Route path='/Location' element={<Location />}></Route>
         <Route path='/About' element={<AboutUs spotlight={spotlight} />} ></Route>
         <Route path='/ContactUs' element={<AboutUs spotlight={spotlight} />} ></Route>
         <Route path='/MyBooking' element={<MyBooking />}></Route>
         <Route path='/Profile' element={<Profile />}></Route>
         <Route path='/Login/*' element={<Login />}></Route>
-        <Route path='/UserRegister' element={<UserRegister />}></Route>
+        <Route path='/UserRegistration' element={<UserRegister />}></Route>
         <Route path='/ManagerRegister' element={<ManagerRegister />}></Route>
         <Route path="/Register" element={<Register />}></Route>
       </Routes>
