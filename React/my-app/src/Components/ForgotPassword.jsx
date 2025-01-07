@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import "./ForgotPassword.css"
+import { FaEye, FaEyeSlash } from "react-icons/fa";  // Import the eye icons
+import "./ForgotPassword.css";
 
 const ForgotPassword = () => {
-    let [otpSent, setotpSent] = useState(false)
+    let [otpSent, setOtpSent] = useState(false);
     let [otpVerified, setOtpVerified] = useState(false);
+    const [newPasswordVisible, setNewPasswordVisible] = useState(false);
+    const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+
     const otpHandler = (e) => {
         e.preventDefault(); // Prevent form submission
         const enteredOtp = document.getElementById("otp").value; // Get the entered OTP
@@ -13,11 +17,11 @@ const ForgotPassword = () => {
         } else {
             alert("Invalid OTP. Please try again.");
         }
-    }
+    };
 
-    let formcontext
+    let formContext;
     if (!otpSent) {
-        formcontext = (
+        formContext = (
             <form action="">
                 <h1>Forgot Password</h1>
                 <div>
@@ -25,51 +29,87 @@ const ForgotPassword = () => {
                     <input type="text" name="" id="" placeholder="Username" />
                 </div>
                 <div className="d-flex justify-content-center">
-                    <button type="submit" onClick={() => setotpSent(true)} >Send otp</button>
+                    <button type="submit" onClick={() => setOtpSent(true)}>
+                        Send OTP
+                    </button>
                 </div>
             </form>
-        )
-    }
-    else {
-        formcontext = (
+        );
+    } else {
+        formContext = (
             <form action="">
-                <h2>Verify otp</h2>
+                <h2>Verify OTP</h2>
                 <div>
                     <label htmlFor="">Enter the OTP</label>
                     <input type="text" name="" id="otp" pattern="\d{4}" />
                 </div>
                 <div className="d-flex justify-content-center">
-                    <button type="submit" onClick={otpHandler}>Verify</button>
+                    <button type="submit" onClick={otpHandler}>
+                        Verify
+                    </button>
                 </div>
             </form>
-        )
+        );
     }
+
     if (otpVerified) {
-        formcontext = (
+        formContext = (
             <form action="">
-                <h2>Change password</h2>
+                <h2>Change Password</h2>
                 <div>
-                    <label htmlFor="">Change password </label>
-                    <input type="text" name="" id="" placeholder="Enter New Password" />
+                    <label htmlFor="">New Password</label>
+                    <div className="password-input-container">
+                        <input
+                            type={newPasswordVisible ? "text" : "password"}
+                            name=""
+                            id=""
+                            placeholder="Enter New Password"
+                        />
+                        <button
+                            type="button"
+                            className="password-toggle-btn"
+                            onClick={() => setNewPasswordVisible(!newPasswordVisible)}
+                            aria-label={newPasswordVisible ? "Hide password" : "Show password"}
+                        >
+                            {newPasswordVisible ? <FaEyeSlash /> : <FaEye />}
+                        </button>
+                    </div>
                 </div>
                 <div>
                     <label htmlFor="">Confirm Password</label>
-                    <input type="text" name="" id="" placeholder="Re-Enter the same password" />
+                    <div className="password-input-container">
+                        <input
+                            type={confirmPasswordVisible ? "text" : "password"}
+                            name=""
+                            id=""
+                            placeholder="Re-Enter the same password"
+                        />
+                        <button
+                            type="button"
+                            className="password-toggle-btn"
+                            onClick={() => setConfirmPasswordVisible(!confirmPasswordVisible)}
+                            aria-label={confirmPasswordVisible ? "Hide password" : "Show password"}
+                        >
+                            {confirmPasswordVisible ? <FaEyeSlash /> : <FaEye />}
+                        </button>
+                    </div>
                 </div>
-                <div className='d-flex justify-content-center'>
+                <div className="d-flex justify-content-center">
                     <NavLink to="/Login" className="nav-link" activeClassName="active">
                         Change
                     </NavLink>
                 </div>
             </form>
-        )
+        );
     }
+
     return (
         <div className="fpassword-container">
             <div className="container-fluid">
-                {formcontext}
+                {formContext}
             </div>
         </div>
-    )
-}
-export default ForgotPassword
+    );
+};
+
+export default ForgotPassword;

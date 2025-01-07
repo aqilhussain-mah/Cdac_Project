@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { AppContext } from "./AppContext";
 import "./Booking.css"
 
 const Booking = () => {
     const [selectedState, setSelectedState] = useState("");
+    const { username } = useContext(AppContext);
 
     const handleStateChange = (event) => {
         setSelectedState(event.target.value);
@@ -13,7 +15,7 @@ const Booking = () => {
             <div className="container-fluid">
                 <div className="card">
 
-                    <p>Welcome, <b>[Username] </b> We’re excited to help you find the perfect function hall!”
+                    <p>Welcome, <b>{username} </b> We’re excited to help you find the perfect function hall!”
                         This makes the user feel acknowledged and engaged.
                     </p>
                     <p>

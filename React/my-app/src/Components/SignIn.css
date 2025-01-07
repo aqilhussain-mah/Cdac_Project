@@ -5,26 +5,29 @@
     justify-content: center;
     align-items: center;
 }
-.signin-container .container-fluid{
+
+.signin-container .container-fluid {
     padding-top: 22%;
     width: 100%;
 }
 
 .signin-container input {
-    width: 100% ;
+    width: 100%;
     background-color: rgb(255, 255, 255);
     height: 40px;
     border-radius: 5px;
     margin: 0;
     box-sizing: border-box;
     color: black;
+    padding-right: 40px;
+    /* Adds space for the icon inside the input field */
 }
 
-.signin-container div{
+.signin-container div {
     margin-top: 10px;
 }
 
-.signin-container button{
+.signin-container button {
     display: flex;
     justify-content: center;
     background-color: white;
@@ -34,4 +37,37 @@
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
+}
+
+/* Container for password input and icon */
+.password-input-container {
+    position: relative;
+    width: 100%;
+}
+
+.password-toggle-btn {
+    position: absolute;
+    top: 50%;
+    right: 10px;    
+    transform: translateY(-50%);
+    background:none;
+    border: 1px solid white;
+    cursor: pointer;
+    padding: 0;
+    /* Remove default padding */
+}
+
+/* Increase icon size and adjust color */
+.password-toggle-btn svg {
+    width: 10px;
+    height: 10px;
+    color: #000;
+    cursor: pointer;
+    /* Ensure pointer cursor for interactivity */
+}
+
+/* Optional: Add a hover effect for the icon */
+.password-toggle-btn:hover svg {
+    color: #007bff;
+    /* Change color on hover for visual feedback */
 }

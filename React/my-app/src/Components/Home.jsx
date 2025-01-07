@@ -1,7 +1,10 @@
+import React , {useContext} from 'react';
 import { NavLink } from 'react-router-dom';
 import './Home.css';
+import { AppContext } from "./AppContext";
 
 const Home = () => {
+    const { role } = useContext(AppContext);
 
     return (
         <div className='Home-container'>
@@ -13,9 +16,15 @@ const Home = () => {
                         Let's Bring the Happiness Together
                     </div>
                     <button type="button" className="overlay-button">
-                        <NavLink to="/Login" className="nav-link" activeClassName="active">
-                            Book Now
-                        </NavLink>
+                        {role === null || role === "none" ? (
+                            <NavLink to="/Login" className="nav-link" activeClassName="active">
+                                Book Now
+                            </NavLink>
+                        ) : (
+                            <NavLink to="/Booking" className="nav-link" activeClassName="active">
+                                Book Now
+                            </NavLink>
+                        )}
                     </button>
                 </div>
 
