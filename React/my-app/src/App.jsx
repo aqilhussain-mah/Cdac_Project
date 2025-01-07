@@ -11,6 +11,7 @@ import UserRegistration from './Components/UserRegistration';
 import AdminRegistrationForm from './Components/AdminRegistrationForm';
 import Booking from './Components/Booking';
 import { AppProvider } from './Components/AppContext';  // Import the context provider
+import AdminHome from './Components/AdminHome';
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
           <Route path='/UserRegistration' element={<UserRegistration />}></Route>
           <Route path='/adminRegister' element={<AdminRegistrationForm />} ></Route>
           <Route path="/Register" element={<Register />}></Route>
+          <Route path='/adminhome' element={<AdminHome></AdminHome>}></Route>
           <Route path="/Booking" element={<Booking />}></Route>
         </Routes>
       </div>

@@ -23,7 +23,7 @@ const SignIn = () => {
     } else if (username === "Admin" && password === "admin@123") {
       updateUsername("Admin");
       updateRole("admin");
-      navigate("/"); // Redirect to Home if validation is successful
+      navigate("/adminhome"); // Redirect to Home if validation is successful
     } else {
       alert("Invalid username or password");
     }

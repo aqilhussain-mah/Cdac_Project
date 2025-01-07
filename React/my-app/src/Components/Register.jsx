@@ -31,11 +31,11 @@ const Register = () => {
                     </div>
                     <div className="ps-3">
                         Provide us with your details, and we'll connect you to more people looking for the perfect venue for their events.
-                        By registering <u><NavLink to="/ManagerRegister" className="nav-link d-inline">here</NavLink></u> or from the below to register as a Manager, 
+                        By registering <u><NavLink to="/adminRegister" className="nav-link d-inline">here</NavLink></u> or from the below to register as a Manager, 
                         you'll expand your reach and have the opportunity to showcase your venue to numerous clients eager to create unforgettable experiences. Join our platform to grow your business and be part of a network that connects event organizers and venue managers seamlessly!
                     </div>
                     <div className="d-flex justify-content-center mt-4">
-                        <NavLink to="/ManagerRegister" className="nav-link">
+                        <NavLink to="/adminRegister" className="nav-link">
                             Register
                         </NavLink>
                     </div>
