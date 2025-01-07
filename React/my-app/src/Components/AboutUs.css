@@ -13,7 +13,11 @@
   transition: all 0.3s ease;
 }
 
-.card-header{
+.card-header {
   font-weight: 650;
   font-size: 1.5rem;
+}
+
+.card-title {
+  font-weight: normal; /* Prevents title from being bold if you don't want it */
 }

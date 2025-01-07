@@ -38,7 +38,7 @@ const ForgotPassword = () => {
     } else {
         formContext = (
             <form action="">
-                <h2>Verify OTP</h2>
+                <h1 className="mb-2">Verify OTP</h1>
                 <div>
                     <label htmlFor="">Enter the OTP</label>
                     <input type="text" name="" id="otp" pattern="\d{4}" />

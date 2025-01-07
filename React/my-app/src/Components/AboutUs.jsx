@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types"; // Import prop-types
 import "./AboutUs.css";
 
 const AboutUs = (props) => {
@@ -55,6 +56,11 @@ const AboutUs = (props) => {
       </div>
     </div>
   );
+};
+
+// PropTypes validation for spotlight prop
+AboutUs.propTypes = {
+  spotlight: PropTypes.string.isRequired, // spotlight prop must be a string and is required
 };
 
 export default AboutUs;
