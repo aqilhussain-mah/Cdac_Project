@@ -12,6 +12,7 @@ import AdminRegistrationForm from './Components/AdminRegistrationForm';
 import Booking from './Components/Booking';
 import { AppProvider } from './Components/AppContext';  // Import the context provider
 import AdminHome from './Components/AdminHome';
+// import InquiryTable from './Components/InquiryTable';
 
 
 function App() {
