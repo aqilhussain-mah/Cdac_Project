@@ -22,7 +22,7 @@ const Login = () => {
                                 <Route path="ResetPassword" element={<ResetPassword />}></Route>
                             </Routes>
 
-                            <Outlet />
+                            {/* <Outlet /> */}
                         </div>
                     </div>
                 </div>

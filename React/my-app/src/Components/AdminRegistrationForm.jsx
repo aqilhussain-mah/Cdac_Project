@@ -1,75 +1,84 @@
-import React, { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
-const AdminRegistrationForm = () => {
+const Registration = () => {
+  const { state } = useLocation();
+  const [newpass, setnewPass] = useState("");
+  const [connewpass, setconnewPass] = useState("");
+  const [role, setRole] = useState(state?.role || "");  // Retrieve the role from location state
 
-  const [newpass, setNewPass] = useState("");
-  const [connewpass, setconnewPass] = useState("")
+  useEffect(() => {
+    if (!role) {
+      alert("Role not defined. Please navigate through the Register page first.");
+    }
+  }, [role]);
+
+  const handleNewPass = (event) => {
+    setnewPass(event.target.value);
+  };
+
+  const handleConNewPass = (event) => {
+    setconnewPass(event.target.value);
+  };
 
   const handlePassword = (event) => {
-    setNewPass(event.target.value);
-  }
-  const handleConPassword = (event) => {
-    setconnewPass(event.target.value);
-  }
-
-  const handleBothPass = () => {
+    event.preventDefault();  // Prevent default form submission
     if (newpass === connewpass) {
-
+      console.log("Password Reset Successfully with Role:", role);
+      window.location.reload();
+    } else {
+      alert("Both passwords should match!");
     }
-    else {
-      alert("Both Password Should Match!!")
-    }
-  }
+  };
 
   return (
-    <div className="container mb-5 d-flex justify-content-center align-items-center ">
+    <div className="container mb-5 d-flex justify-content-center align-items-center">
       <div className="col-md-8">
         <div className="card">
           <div className="card-body">
-            <form className="needs-validation" noValidate onSubmit={handleBothPass}>
+            <form className="needs-validation" noValidate onSubmit={handlePassword}>
               <div className="row">
                 <div className="col-md-6 mb-3">
-                  <label htmlFor="validationTooltip01">First name</label>
+                  <label htmlFor="fname">First name</label>
                   <input
                     type="text"
                     className="form-control"
-                    id="validationTooltip01"
+                    id="fname"
                     placeholder="First name"
                     required
-                  ></input>
+                  />
                 </div>
                 <div className="col-md-6 mb-3">
-                  <label htmlFor="validationTooltip02">Last name</label>
+                  <label htmlFor="lname">Last name</label>
                   <input
                     type="text"
                     className="form-control"
-                    id="validationTooltip02"
+                    id="lname"
                     placeholder="Last name"
                     required
-                  ></input>
+                  />
                 </div>
 
                 <div className="col-md-6 mb-3">
-                  <label htmlFor="validationTooltip03">Email</label>
+                  <label htmlFor="email">Email</label>
                   <input
                     type="email"
                     className="form-control"
-                    id="validationTooltip03"
+                    id="email"
                     placeholder="Email"
                     required
-                  ></input>
+                  />
                 </div>
 
                 <div className="col-md-6 mb-3">
-                  <label htmlFor="validationTooltip03">Mobile Number</label>
+                  <label htmlFor="mob-no">Mobile Number</label>
                   <input
                     type="text"
                     className="form-control"
-                    id="validationTooltip03"
+                    id="mob-no"
                     placeholder="Mobile Number"
-                    pattern="^[0-9]{10}$" // Regular expression to ensure 10 digits
-                    maxLength={10} // Restrict the length to 10 digits
+                    pattern="^[0-9]{10}$"
+                    maxLength={10}
                     required
                   />
                   <div className="invalid-feedback">
@@ -78,34 +87,34 @@ const AdminRegistrationForm = () => {
                 </div>
 
                 <div className="col-md-6 mb-3">
-                  <label htmlFor="validationTooltip03">Password</label>
+                  <label htmlFor="pass">Password</label>
                   <input
                     type="password"
                     className="form-control"
-                    id="validationTooltip03"
-                    onChange={handlePassword}
+                    id="pass"
+                    onChange={handleNewPass}
                     placeholder="Password"
                     required
                   />
-
                 </div>
 
                 <div className="col-md-6 mb-3">
-                  <label htmlFor="validationTooltip03">Confirm Password</label>
+                  <label htmlFor="cpass">Confirm Password</label>
                   <input
                     type="password"
                     className="form-control"
-                    id="validationTooltip03"
-                    onChange={handleConPassword}
+                    id="cpass"
+                    onChange={handleConNewPass}
                     placeholder="Confirm Password"
                     required
                   />
-
                 </div>
-
-
               </div>
-              <div className="d-flex justify-content-center align-items-center mt-3">
+
+              {/* Hidden input for role */}
+              <input type="hidden" name="role" value={role} />
+
+              <div className="d-flex justify-content-center align-items-center">
                 <button className="btn btn-primary" type="submit">
                   Submit form
                 </button>
@@ -118,4 +127,4 @@ const AdminRegistrationForm = () => {
   );
 };
 
-export default AdminRegistrationForm;
+export default Registration;

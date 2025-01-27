@@ -27,7 +27,7 @@ const UserRegistration = () => {
   return (
     <div className='container mb-5 d-flex justify-content-center align-items-center'>
       <div className='col-md-8'>
-        <div className="card">
+        
           <div className="card-body">
             <form className="needs-validation" noValidate onSubmit={handlePassword}>
               <div className="row">
@@ -114,7 +114,7 @@ const UserRegistration = () => {
               </div>
             </form>
           </div>
-        </div>
+       
       </div>
     </div>
   )

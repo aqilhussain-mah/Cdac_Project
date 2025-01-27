@@ -117,6 +117,10 @@ const data = [
   }
 ];
 
+const bookingData = [
+    { SRNo: 1, BookingID: "B001", Customer: "John Doe", Date: "2025-01-01", Status: "Confirmed", Action: "Action" },
+    // ...other data
+  ];
 const columns = [
     {
         Header: "SrNo",
@@ -143,9 +147,18 @@ const columns = [
         accessor: "Action",
     },
 ];
+const bookingColumns = [
+    { Header: "SrNo", accessor: "SRNo" },
+    { Header: "Booking ID", accessor: "BookingID" },
+    { Header: "Customer", accessor: "Customer" },
+    { Header: "Date", accessor: "Date" },
+    { Header: "Status", accessor: "Status" },
+    { Header: "Action", accessor: "Action" },
+  ];
 
 function AdminHome() {
     const [showInquiryTable, setShowInquiryTable] = useState(false);
+    const [showBookingTable,setBookingTable] = useState(false);
 
     const {
         getTableProps,
@@ -175,13 +188,12 @@ function AdminHome() {
                 <h2>Wedding Solutions</h2>
                 <ul>
                     <li onClick={() => setShowInquiryTable(false)}><i className="fas fa-home"></i> Dashboard</li>
-                    <li><i className="fas fa-calendar-check"></i> Booking Applications</li>
+                    <li onClick={() => setBookingTable(true)} ><i className="fas fa-calendar-check"></i> Booking Applications</li>
                     <li onClick={() => setShowInquiryTable(true)}><i className="fas fa-envelope"></i> Inquiries</li>
                     <li><i className="fas fa-users"></i> Clients List</li>
-                    <hr />
-                    <li><i className="fas fa-map-marker-alt"></i> Locations List</li>
-                    <li><i className="fas fa-concierge-bell"></i> Services List</li>
+                    <li><i className="fas fa-concierge-bell"></i>Details</li>
                     <li><i className="fas fa-user"></i> User List</li>
+                    
                 </ul>
             </div>
 
@@ -190,8 +202,7 @@ function AdminHome() {
                 {/* Navbar */}
                 <div className="navbar">
                     <div className="navbar-left">
-                        <i className="fas fa-bars"></i>
-                        <h3>Wedding Solutions - Admin</h3>
+                        <h3 className="p-1 m-2">Wedding Solutions - Admin</h3>
                     </div>
                     <div className="navbar-right">
                         <span>Administrator Admin</span>
@@ -242,7 +253,17 @@ function AdminHome() {
                                 ))}
                             </div>
                         </div>
-                    )}
+                    )
+                    }
+
+                    {/* {showBookingTable && (
+                        <div className="container">
+                            
+                        </div>
+                    )
+
+                    } */}
+                    
 
                     {showInquiryTable && (
                         <div className='d-flex justify-content-center my-3'>
