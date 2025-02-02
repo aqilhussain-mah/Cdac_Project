@@ -4,7 +4,7 @@ import "./AboutUs.css";
 
 const AboutUs = (props) => {
   return (
-    <div className="container">
+    <div className="container-fluid">
       <div className="row">
         {/* First Card (smaller size) */}
         <div className={`col-4 ${props.spotlight === "ContactUs" ? "active-card" : ""}`}>

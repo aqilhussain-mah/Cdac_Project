@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { AppContext } from "./AppContext";  // Import the AppContext
 import { FaEye, FaEyeSlash } from "react-icons/fa";  // Import the eye icons from react-icons/fa
 import "./SignIn.css";
+import axios from "axios";
 
 const SignIn = () => {
   // State for form inputs
@@ -12,21 +13,33 @@ const SignIn = () => {
   const { updateUsername, updateRole } = useContext(AppContext); // Access context functions
   const navigate = useNavigate(); // For redirection
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validation logic
-    if (username === "User" && password === "user@123") {
-      updateUsername("User");
-      updateRole("user");
-      navigate("/"); // Redirect to Home if validation is successful
-    } else if (username === "Admin" && password === "admin@123") {
-      updateUsername("Admin");
-      updateRole("admin");
-      navigate("/adminhome"); // Redirect to Home if validation is successful
-    } else {
-      alert("Invalid username or password");
+    try {
+      const response = await axios.post("http://localhost:3000/login", {
+        username: username,
+        password: password,
+      });
+      if (response.data.success) {
+        updateUsername(username);
+        updateRole(response.data.role);
+      }
+      else{
+        alert("Invalid username or password");
+      }
+      if(response.data.role === "user"){
+        navigate("/");
+      }
+      if(response.data.role === "admin"){
+        navigate("/adminhome");
+      }
+    }catch (error) {
+      console.error("Error during login:", error);
+      alert("An error occurred while logging in.");
     }
+
   };
 
   return (
@@ -38,6 +51,7 @@ const SignIn = () => {
             <label htmlFor="">USERNAME</label><br />
             <input
               type="text"
+              name="username"
               value={username}
               onChange={(e) => setUsername(e.target.value)} // Update username state
               placeholder="Username"
@@ -48,6 +62,7 @@ const SignIn = () => {
             <div className="password-input-container">
               <input
                 type={passwordVisible ? "text" : "password"} // Show password if visible
+                name="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)} // Update password state
                 placeholder="Password"

@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import './App.css';
 import Home from './Components/Home';
 import NavigationBar from './Components/NavigationBar';
@@ -10,32 +10,50 @@ import Register from "./Components/Register";
 import UserRegistration from './Components/UserRegistration';
 import AdminRegistrationForm from './Components/AdminRegistrationForm';
 import Booking from './Components/Booking';
-import { AppProvider, AppContext } from './Components/AppContext';  // Import the context provider and context
+import { AppProvider, AppContext } from './Components/AppContext';  
 import AdminHome from './Components/AdminHome';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
+import FunctionHall from './Components/FunctionHall';
 
 function AppContent() {
   const location = useLocation();
-  const { role } = useContext(AppContext);  // Access role from context
+  const navigate = useNavigate();
+  const { role } = useContext(AppContext);  
 
   const spotlight = location.pathname.includes('ContactUs') ? "ContactUs" : "About";
 
+  // Prevent browser back navigation
+  useEffect(() => {
+    window.history.pushState(null, "", window.location.href);
+    window.onpopstate = () => {
+      window.history.pushState(null, "", window.location.href);
+    };
+  }, []);
+
   return (
     <div className='App'>
-      {role !== 'admin' && <NavigationBar />} 
-      <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/Location' element={<Location />} />
-        <Route path='/About' element={<AboutUs spotlight={spotlight} />} />
-        <Route path='/ContactUs' element={<AboutUs spotlight={spotlight} />} />
-        <Route path='/MyBooking' element={<MyBooking />} />
-        <Route path='/Login/*' element={<Login />} />
-        <Route path='/Registration' element={<UserRegistration />} />
-        <Route path='/adminRegister' element={<AdminRegistrationForm />} />
-        <Route path='/Register' element={<Register />} />
-        <Route path='/adminhome' element={<AdminHome />} />
-        <Route path='/Booking' element={<Booking />} />
-      </Routes>
+      {/* Agar role 'admin' hai toh sirf AdminHome show hoga */}
+      {role === 'admin' && <AdminHome />}
+
+      {/* Agar role 'admin' nahi hai aur path '/adminhome' nahi hai toh NavigationBar dikhana hai */}
+      {role !== 'admin' && location.pathname !== '/adminhome' && <NavigationBar />}
+
+      {/* Routes ko NavigationBar ke andar nahi rakhna chahiye */}
+      {role !== 'admin' && (
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/Location' element={<Location />} />
+          <Route path='/About' element={<AboutUs spotlight={spotlight} />} />
+          <Route path='/ContactUs' element={<AboutUs spotlight={spotlight} />} />
+          <Route path='/MyBooking' element={<MyBooking />} />
+          <Route path='/Login/*' element={<Login />} />
+          <Route path='/Registration' element={<UserRegistration />} />
+          <Route path='/adminRegister' element={<AdminRegistrationForm />} />
+          <Route path='/Register' element={<Register />} />
+          <Route path='/Booking' element={<Booking />} />
+          <Route path='/FunctionHall' element={<FunctionHall />} />
+        </Routes>
+      )}
     </div>
   );
 }

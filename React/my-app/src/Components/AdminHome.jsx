@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { useTable, useSortBy, usePagination } from 'react-table';
-import './AdminHome.css';
-import './Inquiry.css';
+import { useTable, useSortBy, usePagination } from "react-table";
+// import { AppContext } from "./AppContext";
+import "./AdminHome.css";
+import "./Inquiry.css";
+import Profile from "./Profile";
 
 const cards = [
   { title: "Active Locations", value: 2, icon: "fas fa-map-marker-alt" },
@@ -12,270 +14,350 @@ const cards = [
 
 const data = [
   {
-      SRNo: 1,
-      Inquirer: "Ali",
-      Email: "demo@gmail.com",
-      Message: "Testing",
-      Status: "read",
-      Action: "Action"
+    SRNo: 1,
+    Inquirer: "Ali",
+    Email: "demo@gmail.com",
+    Message: "Testing",
+    Status: "read",
+    Action: "Action",
   },
   {
-      SRNo: 2,
-      Inquirer: "Ali",
-      Email: "demo@gmail.com",
-      Message: "Testing",
-      Status: "unread",
-      Action: "Action"
+    SRNo: 2,
+    Inquirer: "Ali",
+    Email: "demo@gmail.com",
+    Message: "Testing",
+    Status: "unread",
+    Action: "Action",
   },
   {
-      SRNo: 3,
-      Inquirer: "Ali",
-      Email: "demo@gmail.com",
-      Message: "Testing",
-      Status: "read",
-      Action: "Action"
+    SRNo: 3,
+    Inquirer: "Ali",
+    Email: "demo@gmail.com",
+    Message: "Testing",
+    Status: "read",
+    Action: "Action",
   },
   {
-      SRNo: 4,
-      Inquirer: "Ali",
-      Email: "demo@gmail.com",
-      Message: "Testing",
-      Status: "unread",
-      Action: "Action"
+    SRNo: 4,
+    Inquirer: "Ali",
+    Email: "demo@gmail.com",
+    Message: "Testing",
+    Status: "unread",
+    Action: "Action",
   },
   {
-      SRNo: 5,
-      Inquirer: "Ali",
-      Email: "demo@gmail.com",
-      Message: "Testing",
-      Status: "read",
-      Action: "Action"
+    SRNo: 5,
+    Inquirer: "Ali",
+    Email: "demo@gmail.com",
+    Message: "Testing",
+    Status: "read",
+    Action: "Action",
   },
   {
-      SRNo: 6,
-      Inquirer: "Ali",
-      Email: "demo@gmail.com",
-      Message: "Testing",
-      Status: "read",
-      Action: "Action"
+    SRNo: 6,
+    Inquirer: "Ali",
+    Email: "demo@gmail.com",
+    Message: "Testing",
+    Status: "read",
+    Action: "Action",
   },
   {
-      SRNo: 7,
-      Inquirer: "Ali",
-      Email: "demo@gmail.com",
-      Message: "Testing",
-      Status: "read",
-      Action: "Action"
+    SRNo: 7,
+    Inquirer: "Ali",
+    Email: "demo@gmail.com",
+    Message: "Testing",
+    Status: "read",
+    Action: "Action",
   },
   {
-      SRNo: 8,
-      Inquirer: "Ali",
-      Email: "demo@gmail.com",
-      Message: "Testing",
-      Status: "read",
-      Action: "Action"
+    SRNo: 8,
+    Inquirer: "Ali",
+    Email: "demo@gmail.com",
+    Message: "Testing",
+    Status: "read",
+    Action: "Action",
   },
   {
-      SRNo: 9,
-      Inquirer: "Ali",
-      Email: "demo@gmail.com",
-      Message: "Testing",
-      Status: "read",
-      Action: "Action"
+    SRNo: 9,
+    Inquirer: "Ali",
+    Email: "demo@gmail.com",
+    Message: "Testing",
+    Status: "read",
+    Action: "Action",
   },
   {
-      SRNo: 10,
-      Inquirer: "Ali",
-      Email: "demo@gmail.com",
-      Message: "Testing",
-      Status: "read",
-      Action: "Action"
+    SRNo: 10,
+    Inquirer: "Ali",
+    Email: "demo@gmail.com",
+    Message: "Testing",
+    Status: "read",
+    Action: "Action",
   },
   {
-      SRNo: 11,
-      Inquirer: "Ali",
-      Email: "demo@gmail.com",
-      Message: "Testing",
-      Status: "read",
-      Action: "Action"
+    SRNo: 11,
+    Inquirer: "Ali",
+    Email: "demo@gmail.com",
+    Message: "Testing",
+    Status: "read",
+    Action: "Action",
   },
   {
-      SRNo: 12,
-      Inquirer: "Ali",
-      Email: "demo@gmail.com",
-      Message: "Testing",
-      Status: "read",
-      Action: "Action"
+    SRNo: 12,
+    Inquirer: "Ali",
+    Email: "demo@gmail.com",
+    Message: "Testing",
+    Status: "read",
+    Action: "Action",
   },
   {
-      SRNo: 13,
-      Inquirer: "Ali",
-      Email: "demo@gmail.com",
-      Message: "Testing",
-      Status: "read",
-      Action: "Action"
-  }
+    SRNo: 13,
+    Inquirer: "Ali",
+    Email: "demo@gmail.com",
+    Message: "Testing",
+    Status: "read",
+    Action: "Action",
+  },
+];
+
+const columns = [
+  {
+    Header: "SrNo",
+    accessor: "SRNo",
+  },
+  {
+    Header: "Inquirer",
+    accessor: "Inquirer",
+  },
+  {
+    Header: "Email",
+    accessor: "Email",
+  },
+  {
+    Header: "Message",
+    accessor: "Message",
+  },
+  {
+    Header: "Status",
+    accessor: "Status",
+  },
+  {
+    Header: "Action",
+    accessor: "Action",
+  },
 ];
 
 const bookingData = [
-    { SRNo: 1, BookingID: "B001", Customer: "John Doe", Date: "2025-01-01", Status: "Confirmed", Action: "Action" },
-    // ...other data
-  ];
-const columns = [
-    {
-        Header: "SrNo",
-        accessor: "SRNo",
-    },
-    {
-        Header: "Inquirer",
-        accessor: "Inquirer",
-    },
-    {
-        Header: "Email",
-        accessor: "Email",
-    },
-    {
-        Header: "Message",
-        accessor: "Message",
-    },
-    {
-        Header: "Status",
-        accessor: "Status",
-    },
-    {
-        Header: "Action",
-        accessor: "Action",
-    },
+  {
+    BookingID: "B001",
+    Customer: "John Doe",
+    Phone: "1234567890",
+    Email: "john@example.com",
+    BookingDate: "2025-02-15",
+    Event: "Wedding",
+  },
+  {
+    BookingID: "B002",
+    Customer: "Jane Smith",
+    Phone: "9876543210",
+    Email: "jane@example.com",
+    BookingDate: "2025-03-10",
+    Event: "Conference",
+  },
 ];
+
 const bookingColumns = [
-    { Header: "SrNo", accessor: "SRNo" },
-    { Header: "Booking ID", accessor: "BookingID" },
-    { Header: "Customer", accessor: "Customer" },
-    { Header: "Date", accessor: "Date" },
-    { Header: "Status", accessor: "Status" },
-    { Header: "Action", accessor: "Action" },
-  ];
+  { Header: "Booking ID", accessor: "BookingID" },
+  { Header: "Customer Name", accessor: "Customer" },
+  { Header: "Phone No.", accessor: "Phone" },
+  { Header: "Email", accessor: "Email" },
+  { Header: "Booking Date", accessor: "BookingDate" },
+  { Header: "Event", accessor: "Event" },
+];
 
 function AdminHome() {
-    const [showInquiryTable, setShowInquiryTable] = useState(false);
-    const [showBookingTable,setBookingTable] = useState(false);
+  const [isPopupVisible, setPopupVisible] = useState(false);
+  const [view, setView] = useState("dashboard");
 
-    const {
-        getTableProps,
-        getTableBodyProps,
-        headerGroups,
-        page,
-        previousPage,
-        nextPage,
-        canPreviousPage,
-        canNextPage,
-        state: { pageIndex },
-        pageCount,
-        prepareRow
-    } = useTable(
-        {
-            columns,
-            data
-        },
-        useSortBy,
-        usePagination
-    );
+  const togglePopup = () => {
+    setPopupVisible(!isPopupVisible);
+  };
 
-    return (
-        <div className="app">
-            {/* Sidebar */}
-            <div className="sidebar">
-                <h2>Wedding Solutions</h2>
-                <ul>
-                    <li onClick={() => setShowInquiryTable(false)}><i className="fas fa-home"></i> Dashboard</li>
-                    <li onClick={() => setBookingTable(true)} ><i className="fas fa-calendar-check"></i> Booking Applications</li>
-                    <li onClick={() => setShowInquiryTable(true)}><i className="fas fa-envelope"></i> Inquiries</li>
-                    <li><i className="fas fa-users"></i> Clients List</li>
-                    <li><i className="fas fa-concierge-bell"></i>Details</li>
-                    <li><i className="fas fa-user"></i> User List</li>
-                    
-                </ul>
-            </div>
+  const handleLogout = () => {
+    console.log("Logout clicked");
+    // Add your logout logic here
+    setPopupVisible(false); // Close popup after logout
+  };
 
-            {/* Main Content */}
-            <div className="main-content">
-                {/* Navbar */}
-                <div className="navbar">
-                    <div className="navbar-left">
-                        <h3 className="p-1 m-2">Wedding Solutions - Admin</h3>
-                    </div>
-                    <div className="navbar-right">
-                        <span>Administrator Admin</span>
-                        <i className="fas fa-user-circle"></i>
-                    </div>
-                </div>
+  const [isModalOpen, setModalOpen] = useState(false);
 
-                <div className='container'>
-                    {showInquiryTable ? (
-                        <table {...getTableProps()}>
-                            <thead>
-                                {headerGroups.map(hg => (
-                                    <tr {...hg.getHeaderGroupProps()}>
-                                        {hg.headers.map(header => (
-                                            <th {...header.getHeaderProps(header.getSortByToggleProps())}>
-                                                {header.render("Header")}
-                                                {header.isSorted && (
-                                                    <span className={`sort-indicator ${header.isSortedDesc ? "sort-desc" : "sort-asc"}`}></span>
-                                                )}
-                                            </th>
-                                        ))}
-                                    </tr>
-                                ))}
-                            </thead>
-                            <tbody {...getTableBodyProps()}>
-                                {page.map(row => {
-                                    prepareRow(row);
-                                    return (
-                                        <tr {...row.getRowProps()} key={row.original.SRNo}>
-                                            {row.cells.map(cell => (
-                                                <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                                            ))}
-                                        </tr>
-                                    );
-                                })}
-                            </tbody>
-                        </table>
-                    ) : (
-                        <div className="dashboard">
-                            <h1>Welcome to Wedding Solutions - Admin Panel</h1>
-                            <div className="cards">
-                                {cards.map((card, index) => (
-                                    <div key={index} className="card">
-                                        <i className={card.icon}></i>
-                                        <h3>{card.value}</h3>
-                                        <p>{card.title}</p>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    )
-                    }
+  const openModal = () => {
+    setModalOpen(true);
+  };
 
-                    {/* {showBookingTable && (
-                        <div className="container">
-                            
-                        </div>
-                    )
+  const closeModal = () => {
+    setModalOpen(false);
+  };
 
-                    } */}
-                    
+  const {
+    getTableProps: getInquiryTableProps,
+    getTableBodyProps: getInquiryTableBodyProps,
+    headerGroups: inquiryHeaderGroups,
+    page: inquiryPage,
+    previousPage: previousInquiryPage,
+    nextPage: nextInquiryPage,
+    canPreviousPage: canPreviousInquiryPage,
+    canNextPage: canNextInquiryPage,
+    state: { pageIndex: inquiryPageIndex },
+    pageCount: inquiryPageCount,
+    prepareRow: prepareInquiryRow,
+  } = useTable({ columns, data }, useSortBy, usePagination);
 
-                    {showInquiryTable && (
-                        <div className='d-flex justify-content-center my-3'>
-                            <button className='btn btn-primary me-2' disabled={!canPreviousPage} onClick={previousPage}>Prev</button>
-                            <span className='mx-2'>{pageIndex + 1} of {pageCount}</span>
-                            <button className='btn btn-primary ms-2' disabled={!canNextPage} onClick={nextPage}>Next</button>
-                        </div>
-                    )}
-                </div>
-            </div>
+  const {
+    getTableProps: getBookingTableProps,
+    getTableBodyProps: getBookingTableBodyProps,
+    headerGroups: bookingHeaderGroups,
+    page: bookingPage,
+    previousPage: previousBookingPage,
+    nextPage: nextBookingPage,
+    canPreviousPage: canPreviousBookingPage,
+    canNextPage: canNextBookingPage,
+    state: { pageIndex: bookingPageIndex },
+    pageCount: bookingPageCount,
+    prepareRow: prepareBookingRow,
+  } = useTable(
+    { columns: bookingColumns, data: bookingData },
+    useSortBy,
+    usePagination
+  );
+
+  return (
+    <div className="app">
+      {/* Sidebar */}
+      <div className="sidebar">
+        <h2>Wedding Solutions</h2>
+        <ul>
+          <li onClick={() => setView("dashboard")}>
+            <i className="fas fa-home"></i> Dashboard
+          </li>
+          <li onClick={() => setView("inquiries")}>
+            <i className="fas fa-home"></i> Inquiries
+          </li>
+          <li onClick={() => setView("bookings")}>
+            <i className="fas fa-calendar-check"></i> Booking Applications
+          </li>
+          <li>
+            <i className="fas fa-users"></i> Clients List
+          </li>
+          <li>
+            <i className="fas fa-concierge-bell"></i>Details
+          </li>
+          <li>
+            <i className="fas fa-user"></i> User List
+          </li>
+        </ul>
+      </div>
+
+      {/* Main Content */}
+      <div className="main-content">
+        {/* Navbar */}
+        <div className="navbar">
+          <div className="navbar-left">
+            <h3 className="p-1 m-2">Wedding Solutions - Admin</h3>
+          </div>
+          <div className="navbar-right">
+            <span>Administrator Admin</span>
+            <Profile></Profile>
+
+            {/* Popup */}
+          </div>
         </div>
-    );
+
+        <div className="container">
+          {/* Dashboard */}
+          {view === "dashboard" && (
+            <div className="dashboard">
+              <h1>Welcome to Wedding Solutions - Admin Panel</h1>
+              <div className="cards">
+                {cards.map((card, index) => (
+                  <div key={index} className="card">
+                    <i className={card.icon} style={{ cursor: "pointer" }}></i>
+                    <h3>{card.value}</h3>
+                    <p>{card.title}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Inquiry Table */}
+          {view === "inquiries" && (
+            <table {...getInquiryTableProps()}>
+              <thead>
+                {inquiryHeaderGroups.map((hg) => (
+                  <tr {...hg.getHeaderGroupProps()}>
+                    {hg.headers.map((header) => (
+                      <th
+                        {...header.getHeaderProps(
+                          header.getSortByToggleProps()
+                        )}
+                      >
+                        {header.render("Header")}
+                      </th>
+                    ))}
+                  </tr>
+                ))}
+              </thead>
+              <tbody {...getInquiryTableBodyProps()}>
+                {inquiryPage.map((row) => {
+                  prepareInquiryRow(row);
+                  return (
+                    <tr {...row.getRowProps()} key={row.original.SRNo}>
+                      {row.cells.map((cell) => (
+                        <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                      ))}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          )}
+
+          {/* Booking Table */}
+          {view === "bookings" && (
+            <table {...getBookingTableProps()}>
+              <thead>
+                {bookingHeaderGroups.map((hg) => (
+                  <tr {...hg.getHeaderGroupProps()}>
+                    {hg.headers.map((header) => (
+                      <th
+                        {...header.getHeaderProps(
+                          header.getSortByToggleProps()
+                        )}
+                      >
+                        {header.render("Header")}
+                      </th>
+                    ))}
+                  </tr>
+                ))}
+              </thead>
+              <tbody {...getBookingTableBodyProps()}>
+                {bookingPage.map((row) => {
+                  prepareBookingRow(row);
+                  return (
+                    <tr {...row.getRowProps()} key={row.original.BookingID}>
+                      {row.cells.map((cell) => (
+                        <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                      ))}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default AdminHome;
