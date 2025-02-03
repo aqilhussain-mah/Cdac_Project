@@ -7,13 +7,13 @@ import AboutUs from './Components/AboutUs';
 import MyBooking from './Components/MyBooking';
 import Login from './Components/Login';
 import Register from "./Components/Register";
-import UserRegistration from './Components/UserRegistration';
-import AdminRegistrationForm from './Components/AdminRegistrationForm';
+
 import Booking from './Components/Booking';
 import { AppProvider, AppContext } from './Components/AppContext';  
 import AdminHome from './Components/AdminHome';
 import { useContext, useEffect } from 'react';
 import FunctionHall from './Components/FunctionHall';
+import UserRegistration from './Components/UserRegistration';
 
 
 function AppContent() {
@@ -50,7 +50,6 @@ function AppContent() {
           <Route path='/MyBooking' element={<MyBooking />} />
           <Route path='/Login/*' element={<Login />} />
           <Route path='/Registration' element={<UserRegistration />} />
-          <Route path='/adminRegister' element={<AdminRegistrationForm />} />
           <Route path='/Register' element={<Register />} />
           <Route path='/Booking' element={<Booking />} />
           <Route path='/FunctionHall' element={<FunctionHall />} />

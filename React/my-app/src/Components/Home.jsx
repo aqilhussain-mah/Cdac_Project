@@ -55,6 +55,40 @@ const Home = () => {
                     </div>
                 </div>
             </div>
+            <footer className="footer mt-5">
+                <div className="container text-center">
+                    <div className="row">
+                        <div className="col-12 col-md-4">
+                            <h5 className="footer-heading">About Us</h5>
+                            <p className="footer-text">
+                                We are dedicated to bringing happiness and creating memorable experiences. Our team ensures the highest quality of service for your needs.
+                            </p>
+                        </div>
+                        <div className="col-12 col-md-4">
+                            <h5 className="footer-heading">Quick Links</h5>
+                            <ul className="footer-links">
+                                <li><NavLink to="/Home" className="footer-link">Home</NavLink></li>
+                                <li><NavLink to="/Booking" className="footer-link">Book Now</NavLink></li>
+                                <li><NavLink to="/About" className="footer-link">About</NavLink></li>
+                                <li><NavLink to="/Contact" className="footer-link">Contact</NavLink></li>
+                            </ul>
+                        </div>
+                        <div className="col-12 col-md-4">
+                            <h5 className="footer-heading">Follow Us</h5>
+                            <div className="social-icons">
+                                <a href="#" className="social-icon"><i className="fab fa-facebook-f"></i></a>
+                                <a href="#" className="social-icon"><i className="fab fa-twitter"></i></a>
+                                <a href="#" className="social-icon"><i className="fab fa-instagram"></i></a>
+                                <a href="#" className="social-icon"><i className="fab fa-linkedin-in"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <p className="footer-text small">
+                        &copy; 2025 Company Name. All Rights Reserved.
+                    </p>
+                </div>
+            </footer>
         </div>
     );
 };
