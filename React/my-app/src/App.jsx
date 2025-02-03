@@ -15,6 +15,7 @@ import AdminHome from './Components/AdminHome';
 import { useContext, useEffect } from 'react';
 import FunctionHall from './Components/FunctionHall';
 
+
 function AppContent() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -34,6 +35,7 @@ function AppContent() {
     <div className='App'>
       {/* Agar role 'admin' hai toh sirf AdminHome show hoga */}
       {role === 'admin' && <AdminHome />}
+      
 
       {/* Agar role 'admin' nahi hai aur path '/adminhome' nahi hai toh NavigationBar dikhana hai */}
       {role !== 'admin' && location.pathname !== '/adminhome' && <NavigationBar />}

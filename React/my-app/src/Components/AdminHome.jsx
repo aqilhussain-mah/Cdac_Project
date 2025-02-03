@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useTable, useSortBy, usePagination } from "react-table";
-// import { AppContext } from "./AppContext";
 import "./AdminHome.css";
 import "./Inquiry.css";
 import Profile from "./Profile";
@@ -13,6 +12,7 @@ const cards = [
 ];
 
 const data = [
+  // Your existing inquiry data
   {
     SRNo: 1,
     Inquirer: "Ali",
@@ -120,6 +120,7 @@ const data = [
 ];
 
 const columns = [
+  // Your existing inquiry columns
   {
     Header: "SrNo",
     accessor: "SRNo",
@@ -142,11 +143,19 @@ const columns = [
   },
   {
     Header: "Action",
-    accessor: "Action",
+    Header: "Action",
+    Cell: ({ row }) => (
+      <div className="button-group">
+        <button className="btn btn-primary">👁 View</button>
+        <button className="btn btn-">✏ Edit</button>
+        <button className="btn delete">🗑 Delete</button>
+      </div>
+    ),
   },
 ];
 
 const bookingData = [
+  // Your existing booking data
   {
     BookingID: "B001",
     Customer: "John Doe",
@@ -166,6 +175,7 @@ const bookingData = [
 ];
 
 const bookingColumns = [
+  // Your existing booking columns
   { Header: "Booking ID", accessor: "BookingID" },
   { Header: "Customer Name", accessor: "Customer" },
   { Header: "Phone No.", accessor: "Phone" },
@@ -174,9 +184,128 @@ const bookingColumns = [
   { Header: "Event", accessor: "Event" },
 ];
 
+// Details Data and Columns
+const detailsData = [
+  {
+    id: 1,
+    name: "Grand Hall",
+    address: "123 Main St, City",
+    services: "Catering, Photography, Decoration",
+    image: "https://via.placeholder.com/150",
+  },
+  {
+    id: 2,
+    name: "Royal Venue",
+    address: "456 Elm St, Town",
+    services: "Catering, Music, Lighting",
+    image: "https://via.placeholder.com/150",
+  },
+];
+
+const detailsColumns = [
+  { Header: "ID", accessor: "id" },
+  { Header: "Name", accessor: "name" },
+  { Header: "Address", accessor: "address" },
+  { Header: "Services", accessor: "services" },
+  {
+    Header: "Image",
+    accessor: "image",
+    Cell: ({ value }) => <img src={value} alt="Venue" width="50" />,
+  },
+];
+
 function AdminHome() {
+
+
+
+
+  const [showHallModal, setShowHallModal] = useState(false);
+  const [showImageModal, setShowImageModal] = useState(false);
+  const [showServicesModal, setShowServicesModal] = useState(false);
+
+  // Functional Hall Details State
+  const [hallData, setHallData] = useState({ name: "", address: "" });
+  const [hallList, setHallList] = useState([]); // Stores added halls
+  const [editHallIndex, setEditHallIndex] = useState(null); // Tracks which hall is being edited
+
+  // Services State
+  const [services, setServices] = useState("");
+  const [servicesList, setServicesList] = useState([]); // Stores services
+  const [editServiceIndex, setEditServiceIndex] = useState(null); // Tracks which service is being edited
+
+  // Handle input change for Functional Hall
+  const handleChangeHall = (e) => {
+    setHallData({ ...hallData, [e.target.name]: e.target.value });
+  };
+
+  // Handle Hall Form Submit (Add or Edit)
+  const handleSubmitHall = (e) => {
+    e.preventDefault();
+    if (editHallIndex !== null) {
+      // Edit Mode
+      const updatedHalls = [...hallList];
+      updatedHalls[editHallIndex] = hallData;
+      setHallList(updatedHalls);
+      setEditHallIndex(null);
+    } else {
+      // Add Mode
+      setHallList([...hallList, hallData]);
+    }
+    setHallData({ name: "", address: "" });
+    setShowHallModal(false);
+  };
+
+  // Edit Hall
+  const handleEditHall = (index) => {
+    setHallData(hallList[index]);
+    setEditHallIndex(index);
+    setShowHallModal(true);
+  };
+
+  // Delete Hall
+  const handleDeleteHall = (index) => {
+    setHallList(hallList.filter((_, i) => i !== index));
+  };
+
+  // Handle Service Form Submit (Add or Edit)
+  const handleSubmitService = () => {
+    if (services.trim() !== "") {
+      if (editServiceIndex !== null) {
+        const updatedServices = [...servicesList];
+        updatedServices[editServiceIndex] = services;
+        setServicesList(updatedServices);
+        setEditServiceIndex(null);
+      } else {
+        setServicesList([...servicesList, services]);
+      }
+      setServices("");
+      setShowServicesModal(false);
+    }
+  };
+
+  // Edit Service
+  const handleEditService = (index) => {
+    setServices(servicesList[index]);
+    setEditServiceIndex(index);
+    setShowServicesModal(true);
+  };
+
+  // Delete Service
+  const handleDeleteService = (index) => {
+    setServicesList(servicesList.filter((_, i) => i !== index));
+  };
+
+
+
   const [isPopupVisible, setPopupVisible] = useState(false);
   const [view, setView] = useState("dashboard");
+  const [details, setDetails] = useState(detailsData);
+  const [formData, setFormData] = useState({
+    name: "",
+    address: "",
+    services: "",
+    image: "",
+  });
 
   const togglePopup = () => {
     setPopupVisible(!isPopupVisible);
@@ -184,8 +313,7 @@ function AdminHome() {
 
   const handleLogout = () => {
     console.log("Logout clicked");
-    // Add your logout logic here
-    setPopupVisible(false); // Close popup after logout
+    setPopupVisible(false);
   };
 
   const [isModalOpen, setModalOpen] = useState(false);
@@ -196,6 +324,20 @@ function AdminHome() {
 
   const closeModal = () => {
     setModalOpen(false);
+  };
+
+  // Handle form input changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  // Handle form submission
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const newDetail = { ...formData, id: details.length + 1 };
+    setDetails([...details, newDetail]);
+    setFormData({ name: "", address: "", services: "", image: "" });
   };
 
   const {
@@ -230,6 +372,24 @@ function AdminHome() {
     usePagination
   );
 
+  const {
+    getTableProps: getDetailsTableProps,
+    getTableBodyProps: getDetailsTableBodyProps,
+    headerGroups: detailsHeaderGroups,
+    page: detailsPage,
+    previousPage: previousDetailsPage,
+    nextPage: nextDetailsPage,
+    canPreviousPage: canPreviousDetailsPage,
+    canNextPage: canNextDetailsPage,
+    state: { pageIndex: detailsPageIndex },
+    pageCount: detailsPageCount,
+    prepareRow: prepareDetailsRow,
+  } = useTable(
+    { columns: detailsColumns, data: details },
+    useSortBy,
+    usePagination
+  );
+
   return (
     <div className="app">
       {/* Sidebar */}
@@ -243,17 +403,12 @@ function AdminHome() {
             <i className="fas fa-home"></i> Inquiries
           </li>
           <li onClick={() => setView("bookings")}>
-            <i className="fas fa-calendar-check"></i> Booking Applications
+            <i className="fas fa-calendar-check"></i> Booked Applicants
           </li>
-          <li>
-            <i className="fas fa-users"></i> Clients List
+          <li onClick={() => setView("details")}>
+            <i className="fas fa-concierge-bell"></i> Details
           </li>
-          <li>
-            <i className="fas fa-concierge-bell"></i>Details
-          </li>
-          <li>
-            <i className="fas fa-user"></i> User List
-          </li>
+         
         </ul>
       </div>
 
@@ -265,10 +420,7 @@ function AdminHome() {
             <h3 className="p-1 m-2">Wedding Solutions - Admin</h3>
           </div>
           <div className="navbar-right">
-            <span>Administrator Admin</span>
             <Profile></Profile>
-
-            {/* Popup */}
           </div>
         </div>
 
@@ -354,6 +506,166 @@ function AdminHome() {
               </tbody>
             </table>
           )}
+
+          {/* Details Section */}
+          {view === "details" && (
+            <div className="container mt-4">
+      <h2>Details Management</h2>
+
+      {/* Buttons to Open Modals */}
+      <button className="btn btn-primary m-2" onClick={() => setShowHallModal(true)}>
+        + Add Functional Hall
+      </button>
+      <button className="btn btn-secondary m-2" onClick={() => setShowImageModal(true)}>
+        Upload Images
+      </button>
+      <button className="btn btn-success m-2" onClick={() => setShowServicesModal(true)}>
+        Manage Services
+      </button>
+
+      {/* Functional Hall Modal */}
+      {showHallModal && (
+        <div className="modal fade show d-block" tabIndex="-1">
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">{editHallIndex !== null ? "Edit Functional Hall" : "Add Functional Hall"}</h5>
+                <button className="close" onClick={() => setShowHallModal(false)}>
+                  <span>&times;</span>
+                </button>
+              </div>
+              <div className="modal-body">
+                <form onSubmit={handleSubmitHall}>
+                  <div className="form-group">
+                    <label>Hall Name:</label>
+                    <input type="text" className="form-control" name="name" value={hallData.name} onChange={handleChangeHall} required />
+                  </div>
+                  <div className="form-group">
+                    <label>Address:</label>
+                    <input 
+                      type="text" 
+                      className="form-control" 
+                      name="address" 
+                      value={hallData.address} 
+                      onChange={handleChangeHall} 
+                      required 
+                    />
+                  </div>
+                  <button type="submit" className="btn btn-primary">
+                    {editHallIndex !== null ? "Update Hall" : "Save Hall"}
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Services Modal */}
+      {showServicesModal && (
+        <div className="modal fade show d-block" tabIndex="-1">
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">{editServiceIndex !== null ? "Edit Service" : "Add Service"}</h5>
+                <button className="close" onClick={() => setShowServicesModal(false)}>
+                  <span>&times;</span>
+                </button>
+              </div>
+              <div className="modal-body">
+                <input 
+                  type="text" 
+                  className="form-control" 
+                  placeholder="Enter Service (e.g., Catering, Decoration)" 
+                  value={services} 
+                  onChange={(e) => setServices(e.target.value)} 
+                />
+              </div>
+              <div className="modal-footer">
+                <button className="btn btn-success" onClick={handleSubmitService}>
+                  {editServiceIndex !== null ? "Update Service" : "Add Service"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Functional Hall Table */}
+      <div className="mt-4">
+        <h3>Functional Halls</h3>
+        <table className="table table-bordered">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Hall Name</th>
+              <th>Address</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {hallList.length > 0 ? (
+              hallList.map((hall, index) => (
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  <td>{hall.name}</td>
+                  <td>{hall.address}</td>
+                  <td>
+                    <button className="btn btn-warning btn-sm mx-1" onClick={() => handleEditHall(index)}>
+                      Edit
+                    </button>
+                    <button className="btn btn-danger btn-sm mx-1" onClick={() => handleDeleteHall(index)}>
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="4" className="text-center">No Functional Halls Added</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Services Table */}
+      <div className="mt-4">
+        <h3>Services</h3>
+        <table className="table table-bordered">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Service Name</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {servicesList.length > 0 ? (
+              servicesList.map((service, index) => (
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  <td>{service}</td>
+                  <td>
+                    <button className="btn btn-warning btn-sm mx-1" onClick={() => handleEditService(index)}>
+                      Edit
+                    </button>
+                    <button className="btn btn-danger btn-sm mx-1" onClick={() => handleDeleteService(index)}>
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="3" className="text-center">No Services Added</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+          )}
         </div>
       </div>
     </div>
@@ -361,3 +673,11 @@ function AdminHome() {
 }
 
 export default AdminHome;
+
+
+
+
+
+
+
+// view pe function 
