@@ -50,3 +50,37 @@
   height: 60%;
   width: 60%;
 }
+.main-img {
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  .main-img {
+    width: 100%;
+  }
+}
+.left-section {
+  background-color: #eab676;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100%;
+}
+
+.social-icons i {
+  font-size: 24px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.social-icons i:hover {
+  opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+  .left-section {
+    padding: 40px;
+  }
+}
