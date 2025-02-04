@@ -1,19 +1,19 @@
 import React, { useContext, useState } from "react";
 import { NavLink } from "react-router-dom";
-import "./NavigationBar.css";
 import { AppContext } from "./AppContext";
+import "./Profile.css"; // Import the external CSS file
 
 const Profile = () => {
   const [modal, setModal] = useState(false);
-  const { username, role, logout } = useContext(AppContext);  // Access both username and role from context
+  const { username, role, logout } = useContext(AppContext); // Access both username and role from context
 
   const toggleModal = () => {
     setModal(!modal);
   };
-  
+
   const handleLogout = () => {
-    logout();  // Call logout function to reset username and role
-    setModal(false);  // Close modal after logout
+    logout(); // Call logout function to reset username and role
+    setModal(false); // Close modal after logout
   };
 
   return (
@@ -22,47 +22,27 @@ const Profile = () => {
       <div className="position-relative">
         <NavLink
           to="#"
-          className="nav-link"
+          className="nav-link d-flex align-items-center profile-navlink"
           onClick={(e) => {
             e.preventDefault(); // Prevent default navigation
             toggleModal();
           }}
         >
-          <i className="bi bi-person"></i>
-          {username === null ? ("Profile") : (username)} {/* Show "Profile" if no username */}
+          <i className="bi bi-person profile-icon"></i>
+          <span className="profile-username">
+            {username === null ? "Profile" : username}
+          </span>
         </NavLink>
 
         {/* Modal Popup */}
         {modal && (
-          <div
-            className="profile-modal"
-            style={{
-              position: "absolute",
-              top: "100%", // Align just below the Profile button
-              right: "0", // Align to the left of the Profile button
-              zIndex: 1050,
-              backgroundColor: "#fff",
-              padding: "20px",
-              borderRadius: "10px",
-              boxShadow: "0 5px 15px rgba(0, 0, 0, 0.3)",
-              width: "200px",
-            }}
-          >
+          <div className="profile-modal">
             {/* Close Button */}
             <button
               type="button"
               className="btn-close"
               aria-label="Close"
               onClick={toggleModal}
-              style={{
-                position: "absolute",
-                top: "10px",
-                right: "10px",
-                background: "transparent",
-                border: "none",
-                fontSize: "1.5rem",
-                cursor: "pointer",
-              }}
             >
               &times;
             </button>
@@ -70,8 +50,10 @@ const Profile = () => {
             {/* Modal Links */}
             <ul className="list-unstyled mb-0">
               <li>
-                <i className="bi bi-person-square"> </i>
-                {username || "Profile"} {/* Show username if available, otherwise "Guest" */}
+                <i className="bi bi-person-square profile-icon"></i>
+                <span className="profile-username">
+                  {username || "Profile"}
+                </span>
               </li>
 
               {role === null || role === "none" ? (
@@ -79,7 +61,7 @@ const Profile = () => {
                   <NavLink
                     to="/Login"
                     className="modal-link"
-                    onClick={toggleModal} // Close modal on link click
+                    onClick={toggleModal}
                   >
                     LogIn
                   </NavLink>
@@ -89,7 +71,7 @@ const Profile = () => {
                   <NavLink
                     to="/Login/ResetPassword"
                     className="modal-link"
-                    onClick={toggleModal} // Close modal on link click
+                    onClick={toggleModal}
                   >
                     Settings
                   </NavLink>
@@ -98,8 +80,13 @@ const Profile = () => {
 
               {role !== null && role !== "none" && (
                 <li>
-                  <NavLink to="/" className="modal-link" onClick={handleLogout}>
-                    <i className="bi bi-box-arow-right"></i> Log Out
+                  <NavLink
+                    to="/"
+                    className="modal-link"
+                    onClick={handleLogout}
+                  >
+                    <i className="bi bi-box-arrow-right profile-icon"></i>{" "}
+                    Log Out
                   </NavLink>
                 </li>
               )}

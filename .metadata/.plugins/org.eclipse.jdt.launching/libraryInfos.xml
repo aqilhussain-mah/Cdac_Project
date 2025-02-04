@@ -12,4 +12,5 @@
         </endorsedDirs>
     </libraryInfo>
     <libraryInfo home="C:\Users\pramo\.p2\pool\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_23.0.1.v20241024-1700\jre" version="23.0.1"/>
+    <libraryInfo home="C:\Program Files\Java\jdk-21" version="21.0.4"/>
 </libraryInfos>

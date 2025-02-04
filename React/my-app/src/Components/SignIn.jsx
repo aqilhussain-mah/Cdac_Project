@@ -18,12 +18,12 @@ const SignIn = () => {
 
     // Validation logic
     try {
-      const response = await axios.post("http://localhost:3000/login", {
+      const response = await axios.post("http://localhost:3000/users/login", {
         username: username,
         password: password,
       });
       if (response.data.success) {
-        updateUsername(username);
+        updateUsername(response.data.firstname  );
         updateRole(response.data.role);
       }
       else{

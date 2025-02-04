@@ -13,7 +13,7 @@ import { AppProvider, AppContext } from './Components/AppContext';
 import AdminHome from './Components/AdminHome';
 import { useContext, useEffect } from 'react';
 import FunctionHall from './Components/FunctionHall';
-import UserRegistration from './Components/UserRegistration';
+import Registration from './Components/Registration';
 
 
 function AppContent() {
@@ -49,7 +49,7 @@ function AppContent() {
           <Route path='/ContactUs' element={<AboutUs spotlight={spotlight} />} />
           <Route path='/MyBooking' element={<MyBooking />} />
           <Route path='/Login/*' element={<Login />} />
-          <Route path='/Registration' element={<UserRegistration />} />
+          <Route path='/Registration' element={<Registration />} />
           <Route path='/Register' element={<Register />} />
           <Route path='/Booking' element={<Booking />} />
           <Route path='/FunctionHall' element={<FunctionHall />} />

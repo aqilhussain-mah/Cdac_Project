@@ -14,7 +14,7 @@ const Booking = () => {
 
   // Fetch states from backend on component mount
   useEffect(() => {
-    fetch("http://localhost:3000/states")
+    fetch("http://localhost:3000/users/states")
       .then((response) => response.json())
       .then((data) => {
         setStates(data.states); // Update states with data from the backend
@@ -29,7 +29,7 @@ const Booking = () => {
   useEffect(() => {
     if (selectedState && selectedState !== "--Select State--") {
       setLoading(true); // Start loading when fetching function halls
-      fetch(`http://localhost:3000/functionHalls/${selectedState}`)
+      fetch(`http://localhost:3000/users/functionHalls/${selectedState}`)
         .then((response) => response.json())
         .then((data) => {
           setFunctionHalls(data.functionHalls || []); // Ensure no undefined value

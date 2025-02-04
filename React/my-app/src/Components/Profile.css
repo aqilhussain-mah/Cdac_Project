@@ -1,0 +1,62 @@
+/* Profile NavLink */
+.profile-navlink {
+    color: black;
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Profile Icon */
+  .profile-icon {
+    font-size: 1.5rem;
+    margin-right: 8px;
+    color: black;
+  }
+  
+  /* Profile Username */
+  .profile-username {
+    color: black;
+  }
+  
+  /* Profile Modal */
+  .profile-modal {
+    position: absolute;
+    top: 100%; /* Align just below the Profile button */
+    right: 0; /* Align to the right of the Profile button */
+    z-index: 1050;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    width: 200px;
+    animation: fadeIn 0.3s ease-in-out; /* Add animation to the modal */
+  }
+  
+  /* Close Button */
+  .btn-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  
+  /* Modal Links */
+  .modal-link {
+    color: black;
+  }
+  
+  .modal-link:hover {
+    text-decoration: none;
+  }
+  
+  /* List Style */
+  .list-unstyled {
+    margin-bottom: 0;
+  }
+  
+  .list-unstyled li {
+    margin-bottom: 8px;
+  }
+  
