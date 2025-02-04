@@ -5,6 +5,8 @@ import "./FunctionHall"
 import "./Inquiry.css";
 import Profile from "./Profile";
 import FunctionHall from "./FunctionHall";
+import Booked from "./Booked";
+import Inquiries from "./Inquiries";
 
 const cards = [
   { title: "Active Locations", value: 2, icon: "fas fa-map-marker-alt" },
@@ -13,191 +15,6 @@ const cards = [
   { title: "Unread Inquiries", value: 1, icon: "fas fa-envelope" },
 ];
 
-const data = [
-  // Your existing inquiry data
-  {
-    SRNo: 1,
-    Inquirer: "Ali",
-    Email: "demo@gmail.com",
-    Message: "Testing",
-    Status: "read",
-    Action: "Action",
-  },
-  {
-    SRNo: 2,
-    Inquirer: "Ali",
-    Email: "demo@gmail.com",
-    Message: "Testing",
-    Status: "unread",
-    Action: "Action",
-  },
-  {
-    SRNo: 3,
-    Inquirer: "Ali",
-    Email: "demo@gmail.com",
-    Message: "Testing",
-    Status: "read",
-    Action: "Action",
-  },
-  {
-    SRNo: 4,
-    Inquirer: "Ali",
-    Email: "demo@gmail.com",
-    Message: "Testing",
-    Status: "unread",
-    Action: "Action",
-  },
-  {
-    SRNo: 5,
-    Inquirer: "Ali",
-    Email: "demo@gmail.com",
-    Message: "Testing",
-    Status: "read",
-    Action: "Action",
-  },
-  {
-    SRNo: 6,
-    Inquirer: "Ali",
-    Email: "demo@gmail.com",
-    Message: "Testing",
-    Status: "read",
-    Action: "Action",
-  },
-  {
-    SRNo: 7,
-    Inquirer: "Ali",
-    Email: "demo@gmail.com",
-    Message: "Testing",
-    Status: "read",
-    Action: "Action",
-  },
-  {
-    SRNo: 8,
-    Inquirer: "Ali",
-    Email: "demo@gmail.com",
-    Message: "Testing",
-    Status: "read",
-    Action: "Action",
-  },
-  {
-    SRNo: 9,
-    Inquirer: "Ali",
-    Email: "demo@gmail.com",
-    Message: "Testing",
-    Status: "read",
-    Action: "Action",
-  },
-  {
-    SRNo: 10,
-    Inquirer: "Ali",
-    Email: "demo@gmail.com",
-    Message: "Testing",
-    Status: "read",
-    Action: "Action",
-  },
-  {
-    SRNo: 11,
-    Inquirer: "Ali",
-    Email: "demo@gmail.com",
-    Message: "Testing",
-    Status: "read",
-    Action: "Action",
-  },
-  {
-    SRNo: 12,
-    Inquirer: "Ali",
-    Email: "demo@gmail.com",
-    Message: "Testing",
-    Status: "read",
-    Action: "Action",
-  },
-  {
-    SRNo: 13,
-    Inquirer: "Ali",
-    Email: "demo@gmail.com",
-    Message: "Testing",
-    Status: "read",
-    Action: "Action",
-  },
-];
-
-const columns = [
-  // Your existing inquiry columns
-  {
-    Header: "SrNo",
-    accessor: "SRNo",
-  },
-  {
-    Header: "Inquirer",
-    accessor: "Inquirer",
-  },
-  {
-    Header: "Email",
-    accessor: "Email",
-  },
-  {
-    Header: "Message",
-    accessor: "Message",
-  },
-  {
-    Header: "Status",
-    accessor: "Status",
-  },
-  {
-    Header: "Action",
-    Header: "Action",
-    Cell: ({ row }) => (
-      <div className="button-group">
-        <button className="btn btn-primary"> View</button>
-        <button className="btn btn-"> Edit</button>
-        <button className="btn delete"> Delete</button>
-      </div>
-    ),
-  },
-];
-
-const bookingData = [
-  // Your existing booking data
-  {
-    BookingID: "B001",
-    Customer: "John Doe",
-    Phone: "1234567890",
-    Email: "john@example.com",
-    BookingDate: "2025-02-15",
-    Event: "Wedding",
-    Action: "Action",
-  },
-  {
-    BookingID: "B002",
-    Customer: "Jane Smith",
-    Phone: "9876543210",
-    Email: "jane@example.com",
-    BookingDate: "2025-03-10",
-    Event: "Conference",
-    Action: "Action",
-  },
-];
-
-const bookingColumns = [
-  // Your existing booking columns
-  { Header: "Booking ID", accessor: "BookingID" },
-  { Header: "Customer Name", accessor: "Customer" },
-  { Header: "Phone No.", accessor: "Phone" },
-  { Header: "Email", accessor: "Email" },
-  { Header: "Booking Date", accessor: "BookingDate" },
-  { Header: "Event", accessor: "Event" },
-  {
-    Header: "Action",
-    Header: "Action",
-    Cell: ({ row }) => (
-      <div className="button-group">
-        <button className="btn btn-primary"> View</button>
-        <button className="btn btn-"> Edit</button>
-        <button className="btn delete"> Delete</button>
-      </div>
-    ),
-  },
-];
 
 // Details Data and Columns
 const detailsData = [
@@ -232,9 +49,7 @@ const detailsColumns = [
 function AdminHome() {
 
 
-  const [showHallModal, setShowHallModal] = useState(false);
-  const [showImageModal, setShowImageModal] = useState(false);
-  const [showServicesModal, setShowServicesModal] = useState(false);
+  
 
   const [isPopupVisible, setPopupVisible] = useState(false);
   const [view, setView] = useState("dashboard");
@@ -246,70 +61,38 @@ function AdminHome() {
     image: "",
   });
 
-  const togglePopup = () => {
-    setPopupVisible(!isPopupVisible);
-  };
 
-  const handleLogout = () => {
-    console.log("Logout clicked");
-    setPopupVisible(false);
-  };
+  // const {
+  //   getTableProps: getInquiryTableProps,
+  //   getTableBodyProps: getInquiryTableBodyProps,
+  //   headerGroups: inquiryHeaderGroups,
+  //   page: inquiryPage,
+  //   previousPage: previousInquiryPage,
+  //   nextPage: nextInquiryPage,
+  //   canPreviousPage: canPreviousInquiryPage,
+  //   canNextPage: canNextInquiryPage,
+  //   state: { pageIndex: inquiryPageIndex },
+  //   pageCount: inquiryPageCount,
+  //   prepareRow: prepareInquiryRow,
+  // } = useTable({ columns, data }, useSortBy, usePagination);
 
-  const [isModalOpen, setModalOpen] = useState(false);
-
-  const openModal = () => {
-    setModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalOpen(false);
-  };
-
-  // Handle form input changes
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  // Handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const newDetail = { ...formData, id: details.length + 1 };
-    setDetails([...details, newDetail]);
-    setFormData({ name: "", address: "", services: "", image: "" });
-  };
-
-  const {
-    getTableProps: getInquiryTableProps,
-    getTableBodyProps: getInquiryTableBodyProps,
-    headerGroups: inquiryHeaderGroups,
-    page: inquiryPage,
-    previousPage: previousInquiryPage,
-    nextPage: nextInquiryPage,
-    canPreviousPage: canPreviousInquiryPage,
-    canNextPage: canNextInquiryPage,
-    state: { pageIndex: inquiryPageIndex },
-    pageCount: inquiryPageCount,
-    prepareRow: prepareInquiryRow,
-  } = useTable({ columns, data }, useSortBy, usePagination);
-
-  const {
-    getTableProps: getBookingTableProps,
-    getTableBodyProps: getBookingTableBodyProps,
-    headerGroups: bookingHeaderGroups,
-    page: bookingPage,
-    previousPage: previousBookingPage,
-    nextPage: nextBookingPage,
-    canPreviousPage: canPreviousBookingPage,
-    canNextPage: canNextBookingPage,
-    state: { pageIndex: bookingPageIndex },
-    pageCount: bookingPageCount,
-    prepareRow: prepareBookingRow,
-  } = useTable(
-    { columns: bookingColumns, data: bookingData },
-    useSortBy,
-    usePagination
-  );
+  // const {
+  //   getTableProps: getBookingTableProps,
+  //   getTableBodyProps: getBookingTableBodyProps,
+  //   headerGroups: bookingHeaderGroups,
+  //   page: bookingPage,
+  //   previousPage: previousBookingPage,
+  //   nextPage: nextBookingPage,
+  //   canPreviousPage: canPreviousBookingPage,
+  //   canNextPage: canNextBookingPage,
+  //   state: { pageIndex: bookingPageIndex },
+  //   pageCount: bookingPageCount,
+  //   prepareRow: prepareBookingRow,
+  // } = useTable(
+  //   { columns: bookingColumns, data: bookingData },
+  //   useSortBy,
+  //   usePagination
+  // );
 
   const {
     getTableProps: getDetailsTableProps,
@@ -381,70 +164,10 @@ function AdminHome() {
           )}
 
           {/* Inquiry Table */}
-          {view === "inquiries" && (
-            <table {...getInquiryTableProps()}>
-              <thead>
-                {inquiryHeaderGroups.map((hg) => (
-                  <tr {...hg.getHeaderGroupProps()}>
-                    {hg.headers.map((header) => (
-                      <th
-                        {...header.getHeaderProps(
-                          header.getSortByToggleProps()
-                        )}
-                      >
-                        {header.render("Header")}
-                      </th>
-                    ))}
-                  </tr>
-                ))}
-              </thead>
-              <tbody {...getInquiryTableBodyProps()}>
-                {inquiryPage.map((row) => {
-                  prepareInquiryRow(row);
-                  return (
-                    <tr {...row.getRowProps()} key={row.original.SRNo}>
-                      {row.cells.map((cell) => (
-                        <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                      ))}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          )}
+          {view === "inquiries" && <Inquiries></Inquiries>}
 
           {/* Booking Table */}
-          {view === "bookings" && (
-            <table {...getBookingTableProps()}>
-              <thead>
-                {bookingHeaderGroups.map((hg) => (
-                  <tr {...hg.getHeaderGroupProps()}>
-                    {hg.headers.map((header) => (
-                      <th
-                        {...header.getHeaderProps(
-                          header.getSortByToggleProps()
-                        )}
-                      >
-                        {header.render("Header")}
-                      </th>
-                    ))}
-                  </tr>
-                ))}
-              </thead>
-              <tbody {...getBookingTableBodyProps()}>
-                {bookingPage.map((row) => {
-                  prepareBookingRow(row);
-                  return (
-                    <tr {...row.getRowProps()} key={row.original.BookingID}>
-                      {row.cells.map((cell) => (
-                        <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                      ))}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          )}
+          {view === "bookings" && <Booked></Booked>}
           {view==="details" && <FunctionHall></FunctionHall>}
         </div>
       </div>
