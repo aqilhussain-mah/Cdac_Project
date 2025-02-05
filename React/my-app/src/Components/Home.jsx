@@ -80,8 +80,8 @@ const Home = () => {
         </div>
       </div>
     </div>
-            {/* <footer className="footer mt-5">
-                <div className="container text-center">
+            <footer className="footer mt-5">
+                <div className=" text-center">
                     <div className="row">
                         <div className="col-12 col-md-4">
                             <h5 className="footer-heading">About Us</h5>
@@ -113,42 +113,8 @@ const Home = () => {
                         &copy; 2025 Company Name. All Rights Reserved.
                     </p>
                 </div>
-            </footer> */}
-            <div className="container my-5">
-      <div className="row">
-        {/* Left Section */}
-        <div className="col-md-6 text-center text-white left-section">
-          <div className="p-5">
-            <h6 className="text-uppercase">We Plan Wedding’s That Are</h6>
-            <h1 className="fw-bold display-4">Grand</h1>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.
-            </p>
-            <div className="social-icons">
-              <i className="fab fa-facebook"></i>
-              <i className="fab fa-twitter"></i>
-              <i className="fab fa-instagram"></i>
-              <i className="fab fa-youtube"></i>
-            </div>
-          </div>
-        </div>
-
-        {/* Right Section */}
-        <div className="col-md-6 p-5">
-          <h2 className="fw-bold">Send us a Message</h2>
-          <p className="text-muted">
-            Deleniti sunt elementum rhoncus nostrud eveniet, ac deleniti magna veniam.
-          </p>
-          <form>
-            <input type="text" className="form-control my-3" placeholder="Your Name" />
-            <input type="email" className="form-control my-3" placeholder="Your Email" />
-            <input type="text" className="form-control my-3" placeholder="Subject" />
-            <textarea className="form-control my-3" rows="4" placeholder="Message"></textarea>
-            <button className="btn btn-outline-dark w-100 py-2">BOOK AN APPOINTMENT</button>
-          </form>
-        </div>
-      </div>
-    </div>
+            </footer>
+     
         </div>
         
     );
