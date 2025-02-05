@@ -29,3 +29,8 @@
     color: black;
     min-width: 20%;
 }
+.btn {
+    margin: 5px; /* Adjust as needed */
+    padding: 8px 15px; /* Adjust button padding */
+  }
+  
