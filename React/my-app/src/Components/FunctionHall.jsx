@@ -10,7 +10,8 @@ const FunctionHall = () => {
     const [hallName, setHallName] = useState("");
     const [hallAddress, setHallAddress] = useState("");
     const [serviceName, setServiceName] = useState("");
-    const [servicePrice, setServicePrice] = useState("");
+    const [serviceType, setServicePrice] = useState("");
+    const[serviceCategory,setServiceCategory] = useState("")
 
     const [functionHalls, setFunctionHalls] = useState([]);
     const [services, setServices] = useState([]);
@@ -31,11 +32,12 @@ const FunctionHall = () => {
     };
 
     const handleAddService = () => {
-        const newService = { id: Date.now(), name: serviceName, price: servicePrice };
+        const newService = { id: Date.now(), name: serviceName, price: serviceType, category:serviceCategory };
         setServices([...services, newService]);
         setShowServiceModal(false);
         setServiceName("");
         setServicePrice("");
+        setServiceCategory("")
     };
 
     const indexOfLastHall = hallPage * rowsPerPage;
@@ -57,6 +59,7 @@ const FunctionHall = () => {
         setSelectedService(service);
         setServiceName(service.name);
         setServicePrice(service.price);
+        setServiceCategory(service.category)
         setShowServiceModal(true);
     };
 
@@ -115,7 +118,8 @@ const FunctionHall = () => {
                         <tr>
                             <th>#</th>
                             <th>Service Name</th>
-                            <th>Price</th>
+                            <th>Type</th>
+                            <th>Category(Veg/Non-Veg)</th>
                             {role === "admin" && <th>Action</th>}
                         </tr>
                     </thead>
@@ -124,7 +128,8 @@ const FunctionHall = () => {
                             <tr key={service.id}>
                                 <td>{index + 1 + (servicePage - 1) * rowsPerPage}</td>
                                 <td>{service.name}</td>
-                                <td>${service.price}</td>
+                                <td>{service.price}</td>
+                                <td>{service.category}</td>
                                 {role === "admin" && (
                                     <td>
                                         <Button size="sm" className="me-2" onClick={() => handleEditService(service)}>Edit</Button>
@@ -180,8 +185,12 @@ const FunctionHall = () => {
                             <Form.Control type="text" placeholder="Enter service name" value={serviceName} onChange={(e) => setServiceName(e.target.value)} />
                         </Form.Group>
                         <Form.Group className="mb-3">
-                            <Form.Label>Price</Form.Label>
-                            <Form.Control type="number" placeholder="Enter price" value={servicePrice} onChange={(e) => setServicePrice(e.target.value)} />
+                            <Form.Label>Type</Form.Label>
+                            <Form.Control type="text" placeholder="Enter Type" value={serviceType} onChange={(e) => setServicePrice(e.target.value)} />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Category</Form.Label>
+                            <Form.Control type="text" placeholder="Enter Category" value={serviceCategory} onChange={(e) => setServiceCategory(e.target.value)} />
                         </Form.Group>
                     </Form>
                 </Modal.Body>
