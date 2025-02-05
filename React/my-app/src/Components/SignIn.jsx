@@ -15,12 +15,14 @@ const SignIn = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     // Validation logic
     try {
       const response = await axios.post("http://localhost:3000/users/login", {
         username: username,
         password: password,
+      },
+      {
+        headers: { "Content-Type": "application/json" }, // Ensure JSON format
       });
       if (response.data.success) {
         updateUsername(response.data.firstname  );
@@ -36,8 +38,12 @@ const SignIn = () => {
         navigate("/adminhome");
       }
     }catch (error) {
-      console.error("Error during login:", error);
-      alert("An error occurred while logging in.");
+      if (error.response && error.response.status === 401) {
+        alert("Invalid username or password"); // Handle invalid credentials
+      } else {
+        console.error("Error during login:", error);
+        alert("An error occurred while logging in.");
+      }
     }
 
   };

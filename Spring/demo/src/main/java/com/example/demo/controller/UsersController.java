@@ -30,11 +30,12 @@ public class UsersController {
 
 		if (user.isPresent() && loginRequest.getPassword().equals(user.get().getPassword())) { // Simple password check
 			// Authentication succeeded, return the role of the user
+			System.out.println(loginRequest.getUsername());
 			return ResponseEntity.ok(Map.of("role", user.get().getRole().toString().toLowerCase(), "firstname",
 					user.get().getFirstName(), "success", true));
 		} else {
 			// Authentication failed
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+			return ResponseEntity.ok(Map.of("success", false, "message", "Invalid username or password"));
 		}
 	}
 

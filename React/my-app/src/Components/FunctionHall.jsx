@@ -1,206 +1,86 @@
-import React, { useState, useContext } from "react";
-import { Modal, Button, Table, Form, Card, Pagination } from "react-bootstrap";
-import { AppContext } from "../Components/AppContext";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { Button, Modal } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const FunctionHall = () => {
-    const { role } = useContext(AppContext);
-    const [showHallModal, setShowHallModal] = useState(false);
-    const [showServiceModal, setShowServiceModal] = useState(false);
+  const location = useLocation();
+  const { hallId } = location.state || {};
+  const [hallDetails, setHallDetails] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [showHallModal, setShowHallModal] = useState(false);
 
-    const [hallName, setHallName] = useState("");
-    const [hallAddress, setHallAddress] = useState("");
-    const [serviceName, setServiceName] = useState("");
-    const [serviceType, setServicePrice] = useState("");
-    const[serviceCategory,setServiceCategory] = useState("")
+  useEffect(() => {
+    if (!hallId) {
+      console.error("hallId is undefined!");
+      setError("Invalid hall ID. Please go back and select a hall.");
+      setLoading(false);
+      return;
+    }
 
-    const [functionHalls, setFunctionHalls] = useState([]);
-    const [services, setServices] = useState([]);
+    console.log(`Fetching details for hallId: ${hallId}`);
+    fetch(`http://localhost:3000/api/functionhalls/${hallId}/details`)
+      .then((response) => {
+        console.log("Response status:", response.status);
+        if (!response.ok) {
+          throw new Error(`Server error: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Fetched hall details:", data);
+        if (!data || Object.keys(data).length === 0) {
+          throw new Error("No details available for this hall.");
+        }
+        setHallDetails(data);
+        setError(null);
+      })
+      .catch((err) => {
+        console.error("Fetch error:", err);
+        setError(err.message || "Failed to fetch hall details. Please try again.");
+      })
+      .finally(() => setLoading(false));
+  }, [hallId]);
 
-    const [hallPage, setHallPage] = useState(1);
-    const [servicePage, setServicePage] = useState(1);
-    const rowsPerPage = 4;
-
-    const [selectedHall, setSelectedHall] = useState(null);
-    const [selectedService, setSelectedService] = useState(null);
-
-    const handleAddFunctionHall = () => {
-        const newHall = { id: Date.now(), name: hallName, address: hallAddress };
-        setFunctionHalls([...functionHalls, newHall]);
-        setShowHallModal(false);
-        setHallName("");
-        setHallAddress("");
-    };
-
-    const handleAddService = () => {
-        const newService = { id: Date.now(), name: serviceName, price: serviceType, category:serviceCategory };
-        setServices([...services, newService]);
-        setShowServiceModal(false);
-        setServiceName("");
-        setServicePrice("");
-        setServiceCategory("")
-    };
-
-    const indexOfLastHall = hallPage * rowsPerPage;
-    const indexOfFirstHall = indexOfLastHall - rowsPerPage;
-    const currentHalls = functionHalls.slice(indexOfFirstHall, indexOfLastHall);
-
-    const indexOfLastService = servicePage * rowsPerPage;
-    const indexOfFirstService = indexOfLastService - rowsPerPage;
-    const currentServices = services.slice(indexOfFirstService, indexOfLastService);
-
-    const handleEditHall = (hall) => {
-        setSelectedHall(hall);
-        setHallName(hall.name);
-        setHallAddress(hall.address);
-        setShowHallModal(true);
-    };
-
-    const handleEditService = (service) => {
-        setSelectedService(service);
-        setServiceName(service.name);
-        setServicePrice(service.price);
-        setServiceCategory(service.category)
-        setShowServiceModal(true);
-    };
-
-    return (
-        <div className="container-fluid mt-4">
-
-            <Card className="shadow-lg p-4">
-              
-                <h2 className="text-center">Function Hall Details</h2>
-
-                {role === "admin" && (
-                    <div className="d-flex justify-content-center gap-3 my-3">
-                        <Button onClick={() => setShowHallModal(true)}>Add Function Hall</Button>
-                        <Button onClick={() => setShowServiceModal(true)}>Add Services</Button>
-                    </div>
-                )}
-
-                <h4 className="mt-4">Function Halls</h4>
-                <Table striped bordered hover responsive>
-                    <thead className="table">
-                        <tr>
-                            <th>#</th>
-                            <th>Function Hall Name</th>
-                            <th>Address</th>
-                            {role === "admin" && <th>Action</th>}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {currentHalls.map((hall, index) => (
-                            <tr key={hall.id}>
-                                <td>{index + 1 + (hallPage - 1) * rowsPerPage}</td>
-                                <td>{hall.name}</td>
-                                <td>{hall.address}</td>
-                                {role === "admin" && (
-                                    <td>
-                                        <Button size="sm" className="me-2" onClick={() => handleEditHall(hall)}>Edit</Button>
-                                        <Button size="sm">Delete</Button>
-                                    </td>
-                                )}
-                            </tr>
-                        ))}
-                    </tbody>
-                </Table>
-
-                <Pagination className="justify-content-center">
-                    {[...Array(Math.ceil(functionHalls.length / rowsPerPage))].map((_, i) => (
-                        <Pagination.Item key={i + 1} active={hallPage === i + 1} onClick={() => setHallPage(i + 1)}>
-                            {i + 1}
-                        </Pagination.Item>
-                    ))}
-                </Pagination>
-
-                <h4 className="mt-4">Services</h4>
-                <Table striped bordered hover responsive>
-                    <thead className="table">
-                        <tr>
-                            <th>#</th>
-                            <th>Service Name</th>
-                            <th>Type</th>
-                            <th>Category(Veg/Non-Veg)</th>
-                            {role === "admin" && <th>Action</th>}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {currentServices.map((service, index) => (
-                            <tr key={service.id}>
-                                <td>{index + 1 + (servicePage - 1) * rowsPerPage}</td>
-                                <td>{service.name}</td>
-                                <td>{service.price}</td>
-                                <td>{service.category}</td>
-                                {role === "admin" && (
-                                    <td>
-                                        <Button size="sm" className="me-2" onClick={() => handleEditService(service)}>Edit</Button>
-                                        <Button size="sm">Delete</Button>
-                                    </td>
-                                )}
-                            </tr>
-                        ))}
-                    </tbody>
-                </Table>
-
-                <Pagination className="justify-content-center">
-                    {[...Array(Math.ceil(services.length / rowsPerPage))].map((_, i) => (
-                        <Pagination.Item key={i + 1} active={servicePage === i + 1} onClick={() => setServicePage(i + 1)}>
-                            {i + 1}
-                        </Pagination.Item>
-                    ))}
-                </Pagination>
-            </Card>
-
-            {/* Function Hall Modal */}
-            <Modal show={showHallModal} onHide={() => setShowHallModal(false)} centered>
-                <Modal.Header closeButton>
-                    <Modal.Title>{selectedHall ? "Edit Function Hall" : "Add Function Hall"}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Function Hall Name</Form.Label>
-                            <Form.Control type="text" placeholder="Enter hall name" value={hallName} onChange={(e) => setHallName(e.target.value)} />
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Address</Form.Label>
-                            <Form.Control type="text" placeholder="Enter address" value={hallAddress} onChange={(e) => setHallAddress(e.target.value)} />
-                        </Form.Group>
-                    </Form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button  onClick={() => setShowHallModal(false)}>Close</Button>
-                    <Button  onClick={handleAddFunctionHall}>Save Hall</Button>
-                </Modal.Footer>
-            </Modal>
-
-            {/* Service Modal */}
-            <Modal show={showServiceModal} onHide={() => setShowServiceModal(false)} centered>
-                <Modal.Header closeButton>
-                    <Modal.Title>{selectedService ? "Edit Service" : "Add Service"}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Service Name</Form.Label>
-                            <Form.Control type="text" placeholder="Enter service name" value={serviceName} onChange={(e) => setServiceName(e.target.value)} />
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Type</Form.Label>
-                            <Form.Control type="text" placeholder="Enter Type" value={serviceType} onChange={(e) => setServicePrice(e.target.value)} />
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Category</Form.Label>
-                            <Form.Control type="text" placeholder="Enter Category" value={serviceCategory} onChange={(e) => setServiceCategory(e.target.value)} />
-                        </Form.Group>
-                    </Form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button onClick={() => setShowServiceModal(false)}>Close</Button>
-                    <Button  onClick={handleAddService}>Save Service</Button>
-                </Modal.Footer>
-            </Modal>
+  return (
+    <div className="container mt-4">
+      <h2>Function Hall Details</h2>
+      {loading && <p>Loading...</p>}
+      {error && <p className="text-danger">{error}</p>}
+      {hallDetails && (
+        <div className="card p-4">
+          <h4>{hallDetails.name}</h4>
+          <p><strong>Location:</strong> {hallDetails.location}</p>
+          <p><strong>Admin:</strong> {hallDetails.admin}</p>
         </div>
-    );
+      )}
+
+      {/* Book Now Button */}
+      <Button
+        variant="primary"
+        className="float-end mb-4"
+        onClick={() => setShowHallModal(true)}
+      >
+        Book Now
+      </Button>
+
+      {/* Booking Modal */}
+      <Modal show={showHallModal} onHide={() => setShowHallModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Book {hallDetails?.name}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>Booking functionality will be implemented soon.</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowHallModal(false)}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </div>
+  );
 };
 
 export default FunctionHall;

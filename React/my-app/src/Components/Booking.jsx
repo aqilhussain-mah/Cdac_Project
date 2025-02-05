@@ -1,51 +1,36 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { AppContext } from "./AppContext";
-import { useNavigate } from "react-router-dom"; // Importing useNavigate
+import { useNavigate } from "react-router-dom";
 import "./Booking.css";
-import "bootstrap/dist/css/bootstrap.min.css"; // Bootstrap for modal styling
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const Booking = () => {
   const [selectedState, setSelectedState] = useState("");
   const [functionHalls, setFunctionHalls] = useState([]);
-  const [states, setStates] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { username } = useContext(AppContext);
   const navigate = useNavigate();
 
-  // State for modal
-  const [showModal, setShowModal] = useState(false);
-  const [bookingData, setBookingData] = useState({
-    name: "",
-    location: "",
-    userName: "",
-    capacity: "",
-    date: "",
-    timeSlot: "Morning",
-    additionalNotes: "",
-  });
-
-  // Fetch states from backend
-  useEffect(() => {
-    fetch("http://localhost:3000/users/states")
-      .then((response) => response.json())
-      .then((data) => {
-        setStates(data.states);
-      })
-      .catch((error) => {
-        console.error("Error fetching states:", error);
-        setError("Failed to fetch states. Please try again later.");
-      });
-  }, []);
+  // Hardcoded states of India
+  const states = [
+    "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
+    "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka", 
+    "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", 
+    "Mizoram", "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", 
+    "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", 
+    "West Bengal", "Andaman and Nicobar Islands", "Chandigarh"
+  ];
 
   // Fetch function halls when state is selected
-  useEffect(() => {
-    if (selectedState && selectedState !== "--Select State--") {
+  const fetchFunctionHalls = (state) => {
+    if (state && state !== "--Select State--") {
       setLoading(true);
-      fetch(`http://localhost:3000/users/functionHalls/${selectedState}`)
+      fetch(`http://localhost:3000/api/functionhalls/state/${state}`)  // Updated endpoint
         .then((response) => response.json())
         .then((data) => {
-          setFunctionHalls(data.functionHalls || []);
+          console.log(data);
+          setFunctionHalls(data || []); // Expecting list of halls with id, state, and location
           setLoading(false);
         })
         .catch((error) => {
@@ -56,48 +41,22 @@ const Booking = () => {
     } else {
       setFunctionHalls([]);
     }
-  }, [selectedState]);
+  };
 
   // Handle state change
   const handleStateChange = (event) => {
     setSelectedState(event.target.value);
+    fetchFunctionHalls(event.target.value); // Fetch function halls after state change
   };
 
   // Handle "View Details" button click
-  const handleBookNow = (hall) => {
-    navigate('/functionhall', {
+  const handleViewDetails = (hall) => {
+    navigate('/FunctionHall', {
       state: {
         selectedState,
-        hallId: hall.id
+        hallId: hall.hallId  // Pass hallId and state to FunctionHall component
       }
     });
-  };
-
-  // Open modal for booking
-  const openBookingModal = (hall) => {
-    setBookingData({
-      ...bookingData,
-      name: hall.name,
-      location: hall.location,
-    });
-    setShowModal(true);
-  };
-
-  // Close modal
-  const closeBookingModal = () => {
-    setShowModal(false);
-  };
-
-  // Handle form input changes
-  const handleChange = (e) => {
-    setBookingData({ ...bookingData, [e.target.name]: e.target.value });
-  };
-
-  // Handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Booking Details:", bookingData);
-    closeBookingModal();
   };
 
   return (
@@ -150,12 +109,9 @@ const Booking = () => {
                       <td>{selectedState}</td>
                       <td>{hall.name}</td>
                       <td>{hall.location}</td>
-                      <td className="d-flex gap-2">
-                        <button onClick={() => handleBookNow(hall)} className="btn btn-primary">
+                      <td>
+                        <button onClick={() => handleViewDetails(hall)} className="btn btn-primary">
                           View Details
-                        </button>
-                        <button className="btn btn-success" onClick={() => openBookingModal(hall)}>
-                          Book Now
                         </button>
                       </td>
                     </tr>
@@ -171,52 +127,6 @@ const Booking = () => {
           )}
         </div>
       </div>
-
-      {/* Modal for Booking */}
-      {showModal && (
-        <div className="modal show d-block" tabIndex="-1">
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Book Function Hall</h5>
-                <button type="button" className="btn-close" onClick={closeBookingModal}></button>
-              </div>
-              <div className="modal-body">
-                <form onSubmit={handleSubmit}>
-                  <div className="mb-3">
-                    <label className="form-label">Hall Name</label>
-                    <input type="text" className="form-control" value={bookingData.name} disabled />
-                  </div>
-                  <div className="mb-3">
-                    <label className="form-label">Location</label>
-                    <input type="text" className="form-control" value={bookingData.location} disabled />
-                  </div>
-                  <div className="mb-3">
-                    <label className="form-label">Your Name</label>
-                    <input type="text" className="form-control" name="userName" value={bookingData.userName} onChange={handleChange} required />
-                  </div>
-                  <div className="mb-3">
-                    <label className="form-label">Capacity</label>
-                    <input type="number" className="form-control" name="capacity" value={bookingData.capacity} onChange={handleChange} required />
-                  </div>
-                  <div className="mb-3">
-                    <label className="form-label">Date</label>
-                    <input type="date" className="form-control" name="date" value={bookingData.date} onChange={handleChange} required />
-                  </div>
-                  <div className="mb-3">
-                    <label className="form-label">Time Slot</label>
-                    <select className="form-select" name="timeSlot" value={bookingData.timeSlot} onChange={handleChange}>
-                      <option value="Morning">Morning</option>
-                      <option value="Night">Night</option>
-                    </select>
-                  </div>
-                  <button type="submit" className="btn btn-primary">Submit Booking</button>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

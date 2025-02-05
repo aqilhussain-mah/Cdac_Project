@@ -1,0 +1,30 @@
+.function-hall-details {
+    margin-top: 30px;
+}
+
+.function-hall-details h4 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.function-hall-details .card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.function-hall-details img {
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.container-fluid {
+    position: relative;
+}
+
+button.btn-primary {
+    font-size: 1rem;
+    font-weight: bold;
+}
