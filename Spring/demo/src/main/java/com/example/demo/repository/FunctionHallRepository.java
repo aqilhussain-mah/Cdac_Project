@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface FunctionHallRepository extends JpaRepository<FunctionHall, Integer> {
     List<FunctionHall> findByState(String state); // Find halls by state
+    List<FunctionHall> findByAdmin_Id(long adminId); // Find halls by adminId
 }

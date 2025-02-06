@@ -32,7 +32,7 @@ public class UsersController {
 			// Authentication succeeded, return the role of the user
 			System.out.println(loginRequest.getUsername());
 			return ResponseEntity.ok(Map.of("role", user.get().getRole().toString().toLowerCase(), "firstname",
-					user.get().getFirstName(), "success", true));
+					user.get().getFirstName(),"id",user.get().getId(), "success", true));
 		} else {
 			// Authentication failed
 			return ResponseEntity.ok(Map.of("success", false, "message", "Invalid username or password"));

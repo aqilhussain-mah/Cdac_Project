@@ -10,7 +10,7 @@ const SignIn = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false); // Track password visibility
-  const { updateUsername, updateRole } = useContext(AppContext); // Access context functions
+  const { updateUsername, updateRole, updateUserId } = useContext(AppContext); // Access context functions
   const navigate = useNavigate(); // For redirection
 
   const handleSubmit = async (e) => {
@@ -27,6 +27,7 @@ const SignIn = () => {
       if (response.data.success) {
         updateUsername(response.data.firstname  );
         updateRole(response.data.role);
+        updateUserId(response.data.id);
       }
       else{
         alert("Invalid username or password");

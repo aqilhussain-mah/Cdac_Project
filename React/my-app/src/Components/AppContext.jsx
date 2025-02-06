@@ -1,69 +1,97 @@
-    import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect } from "react";
 
-    // Create the context
-    const AppContext = createContext();
+// Create the context
+const AppContext = createContext();
 
-    // Create the provider component
-    const AppProvider = ({ children }) => {
-        // Load initial state from sessionStorage or use null as the default for username and role
-        const [username, setUsername] = useState(sessionStorage.getItem("username") || null);
-        const [role, setRole] = useState(sessionStorage.getItem("role") || null);
+// Create the provider component
+const AppProvider = ({ children }) => {
+    // Load initial state from sessionStorage or use null as the default for username, role, and userId
+    const [username, setUsername] = useState(sessionStorage.getItem("username") || null);
+    const [role, setRole] = useState(sessionStorage.getItem("role") || null);
+    const [userId, setUserId] = useState(sessionStorage.getItem("userId") || null);  // Add userId state
 
-        // Save to sessionStorage whenever username or role changes
-        useEffect(() => {
-            if (username !== null) {
-                sessionStorage.setItem("username", username);
-            }
-        }, [username]);
+    // Hardcoded list of Indian states
+    const stateList = [
+        "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
+        "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka", 
+        "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", 
+        "Mizoram", "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", 
+        "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", 
+        "West Bengal", "Andaman and Nicobar Islands", "Chandigarh"
+    ];
 
-        useEffect(() => {
-            if (role !== null) {
-                sessionStorage.setItem("role", role);
-            }
-        }, [role]);
+    // Save to sessionStorage whenever username, role, or userId changes
+    useEffect(() => {
+        if (username !== null) {
+            sessionStorage.setItem("username", username);
+        }
+    }, [username]);
 
-        // Function to update username (after login)
-        const updateUsername = (name) => {
-            setUsername(name);
-        };
+    useEffect(() => {
+        if (role !== null) {
+            sessionStorage.setItem("role", role);
+        }
+    }, [role]);
 
-        // Function to update role (after login)
-        const updateRole = (userRole) => {
-            setRole(userRole);
-        };
+    useEffect(() => {
+        if (userId !== null) {
+            sessionStorage.setItem("userId", userId);
+        }
+    }, [userId]);
 
-        // Function to log out (reset username and role)
-        const logout = () => {
-            setUsername(null); // Reset username to null
-            setRole(null); // Reset role to null
-            // Clear sessionStorage on logout
-            sessionStorage.removeItem("username");
-            sessionStorage.removeItem("role");
-        };
-
-        // Function to handle user login
-        const login = (name, userRole) => {
-            setUsername(name); // Update username with the name from backend
-            setRole(userRole);  // Set the user role based on backend response
-            sessionStorage.setItem("username", name);
-            sessionStorage.setItem("role", userRole);
-        };
-
-        // Provide the context value
-        const contextValue = {
-            username,
-            role,
-            updateUsername,
-            updateRole,
-            login, // Add login function to context
-            logout,
-        };
-
-        return (
-            <AppContext.Provider value={contextValue}>
-                {children}
-            </AppContext.Provider>
-        );
+    // Function to update username (after login)
+    const updateUsername = (name) => {
+        setUsername(name);
     };
 
-    export { AppContext, AppProvider };
+    // Function to update role (after login)
+    const updateRole = (userRole) => {
+        setRole(userRole);
+    };
+
+    // Function to update userId (after login)
+    const updateUserId = (id) => {
+        setUserId(id);
+    };
+
+    // Function to log out (reset username, role, and userId)
+    const logout = () => {
+        setUsername(null);
+        setRole(null);
+        setUserId(null);  // Clear userId on logout
+        sessionStorage.removeItem("username");
+        sessionStorage.removeItem("role");
+        sessionStorage.removeItem("userId");
+    };
+
+    // Function to handle user login
+    const login = (name, userRole, id) => {
+        setUsername(name);
+        setRole(userRole);
+        setUserId(id);  // Set userId on login
+        sessionStorage.setItem("username", name);
+        sessionStorage.setItem("role", userRole);
+        sessionStorage.setItem("userId", id);  // Save userId to sessionStorage
+    };
+
+    // Provide the context value
+    const contextValue = {
+        username,
+        role,
+        userId,  // Expose userId in context
+        stateList,  // Expose stateList in context
+        updateUsername,
+        updateRole,
+        updateUserId,  // Expose updateUserId function
+        login,
+        logout,
+    };
+
+    return (
+        <AppContext.Provider value={contextValue}>
+            {children}
+        </AppContext.Provider>
+    );
+};
+
+export { AppContext, AppProvider };

@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/functionhalls")
+@CrossOrigin(origins = "http://localhost:5173")
 public class FunctionHallController {
 
     @Autowired
@@ -41,7 +42,6 @@ public class FunctionHallController {
         if (hall == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Function hall not found"));
         }
-        System.out.println("________________________________");
         System.out.println(hall);
         return ResponseEntity.ok(Map.of(
                 "name", hall.getHallName(),
@@ -85,4 +85,19 @@ public class FunctionHallController {
         List<Map<String, Object>> result = functionHallService.searchFunctionHalls(query);
         return ResponseEntity.ok(result);
     }
+    
+ // Get function halls by adminId
+    @GetMapping("/admin/{adminId}")
+    public ResponseEntity<List<Map<String, String>>> getFunctionHallsByAdmin(@PathVariable long adminId) {
+        List<Map<String, String>> halls = functionHallService.getFunctionHallsByAdminId(adminId).stream()
+                .map(hall -> Map.of(
+                        "id", String.valueOf(hall.getHallId()),
+                        "name", hall.getHallName(),
+                        "state", hall.getState(),
+                        "location", hall.getLocation()
+                ))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(halls);
+    }
+    
 }

@@ -76,4 +76,8 @@ public class FunctionHallService {
 
         return results;
     }
+    
+    public List<FunctionHall> getFunctionHallsByAdminId(long adminId) {
+        return functionHallRepository.findByAdmin_Id(adminId); // Fetch halls by adminId
+    }
 }
