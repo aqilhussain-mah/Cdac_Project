@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Route, Routes, useLocation, useNavigate } from
 import './App.css';
 import Home from './Components/Home';
 import NavigationBar from './Components/NavigationBar';
-import Location from './Components/Location';
 import AboutUs from './Components/AboutUs';
 import MyBooking from './Components/MyBooking';
 import Login from './Components/Login';
@@ -14,7 +13,6 @@ import AdminHome from './Components/AdminHome';
 import { useContext, useEffect } from 'react';
 import FunctionHall from './Components/FunctionHall';
 import Registration from './Components/Registration';
-import AdminHomeDuplicate from './Components/AdminHomeDuplicate';
 import Profile from './Components/Profile';
 
 
@@ -37,7 +35,6 @@ function AppContent() {
     <div className='App'>
       {/* Agar role 'admin' hai toh sirf AdminHome show hoga */}
       {role === 'admin' && <AdminHome />}
-      {/* <AdminHomeDuplicate /> */}
 
       {/* Agar role 'admin' nahi hai aur path '/adminhome' nahi hai toh NavigationBar dikhana hai */}
       {role !== 'admin' && location.pathname !== '/adminhome' && <NavigationBar />}
@@ -46,9 +43,10 @@ function AppContent() {
       {role !== 'admin' && (
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='/Location' element={<Location />} />
+
           <Route path='/About' element={<AboutUs spotlight={spotlight} />} />
           <Route path='/ContactUs' element={<AboutUs spotlight={spotlight} />} />
+
           <Route path='/MyBooking' element={<MyBooking />} />
           <Route path='/Login/*' element={<Login />} />
           <Route path='/Registration' element={<Registration />} />

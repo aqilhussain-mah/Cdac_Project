@@ -1,25 +1,27 @@
+/* Scoped CSS for AboutUs component */
+
 /* General container padding to prevent cards from touching screen edges */
-.container-fluid {
+.about-us .container-fluid {
   padding-left: 15px;
   padding-right: 15px;
 }
 
 /* Center the row content and add more space between cards */
-.row {
+.about-us .row {
   display: flex;
   justify-content: center;
   gap: 30px;
 }
 
 /* Apply blur effect to non-highlighted cards */
-.col-4 .card,
-.col-7 .card {
+.about-us .col-4 .card,
+.about-us .col-7 .card {
   filter: blur(4px);
   transition: filter 0.3s ease;
 }
 
 /* Special styling for active (highlighted) cards */
-.active-card .card {
+.about-us .active-card .card {
   filter: none; /* Remove blur from active card */
   box-shadow: 7px 7px 40px #ed9500;
   border: 2px solid wheat;
@@ -28,35 +30,35 @@
 }
 
 /* Styling for the first (smaller) card */
-.col-4 {
+.about-us .col-4 {
   padding-left: 0;
   padding-right: 0;
 }
 
-.card-header {
+.about-us .card-header {
   font-weight: 650;
   font-size: 1.5rem;
 }
 
-.card-body {
+.about-us .card-body {
   padding: 20px;
 }
 
-.card-title {
+.about-us .card-title {
   font-weight: normal;
   margin-top: 20px;
 }
 
-.ms-4 {
+.about-us .ms-4 {
   margin-left: 3rem !important;
 }
 
-.me-2 {
+.about-us .me-2 {
   margin-right: 0.5rem !important;
 }
 
 /* Custom card size for About Us card */
-.cardsizing {
+.about-us .cardsizing {
   width: 100%;
   max-width: 700px;
   height: 65vh;
@@ -64,31 +66,31 @@
 
 /* Ensures responsive layout for the cards */
 @media (max-width: 768px) {
-  .col-4, .col-7 {
+  .about-us .col-4, .about-us .col-7 {
     max-width: 100%;
     padding-left: 0;
     padding-right: 0;
   }
 
   /* Add margin between stacked cards */
-  .col-4 {
+  .about-us .col-4 {
     margin-bottom: 70px; 
   }
 
-  .cardsizing {
+  .about-us .cardsizing {
     width: 100%;
     height: auto;
   }
 }
 
 /* Additional spacing between content in card */
-.card-body p {
+.about-us .card-body p {
   margin-bottom: 15px;
 }
 
 /* Ensures space between cards on mobile screens */
 @media (max-width: 576px) {
-  .row {
+  .about-us .row {
     flex-direction: column;
     align-items: center;
   }
