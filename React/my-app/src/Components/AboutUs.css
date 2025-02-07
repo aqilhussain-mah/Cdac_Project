@@ -1,3 +1,52 @@
+/* General container padding to prevent cards from touching screen edges */
+.container-fluid {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Center the row content and add more space between cards */
+.row {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+/* Apply blur effect to non-highlighted cards */
+.col-4 .card,
+.col-7 .card {
+  filter: blur(4px);
+  transition: filter 0.3s ease;
+}
+
+/* Special styling for active (highlighted) cards */
+.active-card .card {
+  filter: none; /* Remove blur from active card */
+  box-shadow: 7px 7px 40px #ed9500;
+  border: 2px solid wheat;
+  transform: scale(1.05);
+  transition: all 0.3s ease;
+}
+
+/* Styling for the first (smaller) card */
+.col-4 {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.card-header {
+  font-weight: 650;
+  font-size: 1.5rem;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.card-title {
+  font-weight: normal;
+  margin-top: 20px;
+}
+
 .ms-4 {
   margin-left: 3rem !important;
 }
@@ -6,18 +55,41 @@
   margin-right: 0.5rem !important;
 }
 
-.active-card .card {
-  box-shadow: 7px 7px 40px #ed9500;
-  border: 2px solid wheat;
-  transform: scale(1.05);
-  transition: all 0.3s ease;
+/* Custom card size for About Us card */
+.cardsizing {
+  width: 100%;
+  max-width: 700px;
+  height: 65vh;
 }
 
-.card-header {
-  font-weight: 650;
-  font-size: 1.5rem;
+/* Ensures responsive layout for the cards */
+@media (max-width: 768px) {
+  .col-4, .col-7 {
+    max-width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* Add margin between stacked cards */
+  .col-4 {
+    margin-bottom: 70px; 
+  }
+
+  .cardsizing {
+    width: 100%;
+    height: auto;
+  }
 }
 
-.card-title {
-  font-weight: normal; /* Prevents title from being bold if you don't want it */
+/* Additional spacing between content in card */
+.card-body p {
+  margin-bottom: 15px;
+}
+
+/* Ensures space between cards on mobile screens */
+@media (max-width: 576px) {
+  .row {
+    flex-direction: column;
+    align-items: center;
+  }
 }
