@@ -43,6 +43,14 @@ const NavigationBar = () => {
                 <i className="bi bi-envelope"></i> Contact
               </NavLink>
             </div>
+            {/* Conditionally render "My Booking" based on role */}
+            {role === "user" && (
+              <div className="me-4">
+                <NavLink to="/MyBooking" className="nav-link">
+                  <i className="bi bi-bookmark"></i> My Booking
+                </NavLink>
+              </div>
+            )}
           </div>
 
           {/* Right-aligned Profile component */}

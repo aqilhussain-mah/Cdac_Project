@@ -1,4 +1,3 @@
-// Booking.jsx
 import React, { useState, useContext } from "react";
 import { AppContext } from "./AppContext";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +9,7 @@ const Booking = () => {
   const [functionHalls, setFunctionHalls] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const { username, stateList } = useContext(AppContext);
+  const { username, stateList, updateFunctionHallId } = useContext(AppContext);
   const navigate = useNavigate();
 
   const fetchFunctionHalls = (state) => {
@@ -39,12 +38,9 @@ const Booking = () => {
   };
 
   const handleViewDetails = (hall) => {
-    navigate("/FunctionHall", {
-      state: {
-        selectedState,
-        hallId: Number(hall.id), // Ensure the correct key from backend
-      },
-    });
+    const functionHallId = Number(hall.id); // Ensure it's a number
+    updateFunctionHallId(functionHallId); // Store in AppContext
+    navigate("/FunctionHall");
   };
 
   return (
