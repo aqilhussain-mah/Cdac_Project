@@ -8,13 +8,14 @@ import org.springframework.web.bind.annotation.*;
 import com.example.demo.Entity.FunctionHall;
 import com.example.demo.services.FunctionHallService;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/functionhalls")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "http://localhost:5173") // Frontend allowed to access
 public class FunctionHallController {
 
     @Autowired
@@ -35,15 +36,15 @@ public class FunctionHallController {
         return ResponseEntity.ok(halls);
     }
 
-    // Get function hall details by state and hallId
+    // Get function hall details by hallId
     @GetMapping("/{hallId}/details")
     public ResponseEntity<Map<String, String>> getFunctionHallDetails(@PathVariable int hallId) {
         FunctionHall hall = functionHallService.getFunctionHallDetails(hallId);
         if (hall == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Function hall not found"));
         }
-        System.out.println(hall);
         return ResponseEntity.ok(Map.of(
+                "state", hall.getState(),
                 "name", hall.getHallName(),
                 "location", hall.getLocation(),
                 "admin", hall.getAdmin().getUsername()
@@ -85,8 +86,8 @@ public class FunctionHallController {
         List<Map<String, Object>> result = functionHallService.searchFunctionHalls(query);
         return ResponseEntity.ok(result);
     }
-    
- // Get function halls by adminId
+
+    // Get function halls by adminId
     @GetMapping("/admin/{adminId}")
     public ResponseEntity<List<Map<String, String>>> getFunctionHallsByAdmin(@PathVariable long adminId) {
         List<Map<String, String>> halls = functionHallService.getFunctionHallsByAdminId(adminId).stream()
@@ -99,5 +100,30 @@ public class FunctionHallController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(halls);
     }
-    
+
+    // Update Function Hall
+    @PostMapping("/update")
+    public ResponseEntity<Map<String, Object>> updateFunctionHall(@RequestBody FunctionHall updatedHall) {
+        try {
+            // Validate that the hall exists
+            FunctionHall hall = functionHallService.getFunctionHallDetails(updatedHall.getHallId());
+            if (hall == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Function hall not found"));
+            }
+
+            // Update the details of the hall
+            hall.setHallName(updatedHall.getHallName());
+            hall.setLocation(updatedHall.getLocation());
+            hall.setState(updatedHall.getState());
+
+            // Save the updated function hall
+            FunctionHall updated = functionHallService.updateFunctionHall(hall);
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "Function hall updated successfully");
+            response.put("hall", updated);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", e.getMessage()));
+        }
+    }
 }

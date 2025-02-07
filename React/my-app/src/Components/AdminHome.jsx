@@ -62,7 +62,7 @@ const AdminHome = ({ setView }) => {
         </div>
         <hr />
 
-        <div className="card main">
+        <div className="main">
           {/* Dashboard View */}
           {activeView === "dashboard" && (
             <div>

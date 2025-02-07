@@ -26,8 +26,7 @@ public class FunctionHallService {
 
     // Get FunctionHalls based on State name
     public List<FunctionHall> getFunctionHallsByState(String stateName) {
-        // Fetch function halls based on the state name (now it's a String)
-        return functionHallRepository.findByState(stateName); // Assuming you have a query method in your repository
+        return functionHallRepository.findByState(stateName);
     }
 
     // Get details of a FunctionHall by state and hallId
@@ -35,29 +34,25 @@ public class FunctionHallService {
         return functionHallRepository.findById(hallId).orElse(null);
     }
 
-
     // Add a new FunctionHall
     public FunctionHall addFunctionHall(String stateName, String hallName, String location, long adminId) {
-        // Fetch admin by ID
         Users admin = usersRepository.findById(adminId).orElse(null);
         if (admin == null) {
             throw new IllegalArgumentException("Admin not found for ID: " + adminId);
         }
 
-        // Create a new FunctionHall with the state (as String) and admin
         FunctionHall functionHall = new FunctionHall(hallName, location, stateName, admin);
-        return functionHallRepository.save(functionHall); // Save and return the entity
+        return functionHallRepository.save(functionHall);
     }
 
     // Get all function halls
     public List<FunctionHall> getAllFunctionHalls() {
-        return functionHallRepository.findAll(); // Fetch all function halls
+        return functionHallRepository.findAll();
     }
 
     // Search FunctionHalls by term (hallName, location, or stateName)
     public List<Map<String, Object>> searchFunctionHalls(String searchTerm) {
         List<Map<String, Object>> results = new ArrayList<>();
-
         List<FunctionHall> halls = functionHallRepository.findAll();
 
         for (FunctionHall hall : halls) {
@@ -67,17 +62,43 @@ public class FunctionHallService {
                 Map<String, Object> result = new HashMap<>();
                 result.put("state", hall.getState());
                 result.put("hallId", hall.getHallId());
-                result.put("hallName", hall.getHallName()); // Include hallName
+                result.put("hallName", hall.getHallName());
                 result.put("location", hall.getLocation());
-                result.put("admin", hall.getAdmin().getUsername()); // Include admin's username
+                result.put("admin", hall.getAdmin().getUsername());
                 results.add(result);
             }
         }
 
         return results;
     }
-    
+
     public List<FunctionHall> getFunctionHallsByAdminId(long adminId) {
-        return functionHallRepository.findByAdmin_Id(adminId); // Fetch halls by adminId
+        return functionHallRepository.findByAdmin_Id(adminId);
+    }
+
+    // Updated method for updating the FunctionHall
+    public FunctionHall updateFunctionHall(FunctionHall updatedHall) {
+        int hallId = updatedHall.getHallId();
+
+        FunctionHall existingHall = functionHallRepository.findById(hallId).orElse(null);
+
+        if (existingHall == null) {
+            throw new RuntimeException("Function hall not found");
+        }
+
+        existingHall.setHallName(updatedHall.getHallName());
+        existingHall.setLocation(updatedHall.getLocation());
+        existingHall.setState(updatedHall.getState());
+
+        if (updatedHall.getAdmin() != null && updatedHall.getAdmin().getId() != null) {
+            Users admin = usersRepository.findById(updatedHall.getAdmin().getId()).orElse(null);
+            if (admin != null) {
+                existingHall.setAdmin(admin);
+            } else {
+                throw new RuntimeException("Admin not found");
+            }
+        }
+
+        return functionHallRepository.save(existingHall);
     }
 }
