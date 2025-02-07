@@ -26,4 +26,9 @@ public class UsersService {
     public Optional<Users> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
+    
+    public void updateUser(Users user) {
+    	userRepository.save(user);  // This will update the user with the new password
+    }
+    
 }

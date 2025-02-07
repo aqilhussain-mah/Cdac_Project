@@ -32,23 +32,20 @@ const ResetPassword = () => {
         setLoading(true);
 
         try {
-            // Step 1: Send username and current password for validation
-            const loginResponse = await axios.post("http://localhost:3000/login", {
+            // Step 1: Send username, current password, and new password to the backend
+            const response = await axios.post("http://localhost:3000/users/resetPassword", {
                 username,
-                password: currentPassword
+                currentPassword,
+                newPassword
             });
 
-            if (loginResponse.data.success) {
-                // Step 2: Send the new password to the backend
-                await axios.post("http://localhost:3000/resetPassword", {
-                    username,
-                    newPassword
-                });
-
-                // Redirect to login page after successful reset
-                navigate("/Login");
+            if (response.data.success) {
+                // If the response indicates success, show success message and redirect to login page
+                alert(response.data.message);  // Display success message
+                navigate("/Login");  // Redirect to login page
             } else {
-                setError("Invalid username or password");
+                // If the credentials are invalid, display error message
+                setError(response.data.message);
             }
         } catch (error) {
             console.error("Error during password reset:", error);

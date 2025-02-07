@@ -1,13 +1,5 @@
 package com.example.demo.controller;
 
-import java.util.ArrayList;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,109 +8,71 @@ import org.springframework.web.bind.annotation.*;
 import com.example.demo.Entity.Users;
 import com.example.demo.services.UsersService;
 
+import java.util.Map;
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/users")
 @CrossOrigin(origins = "http://localhost:5173") // Ensure CORS is enabled
 public class UsersController {
 
-	@Autowired
-	private UsersService userService;
+    @Autowired
+    private UsersService userService;
 
-	@PostMapping("/login")
-	public ResponseEntity<?> loginUser(@RequestBody Users loginRequest) {
-		Optional<Users> user = userService.findByUsername(loginRequest.getUsername());
+    // Login endpoint
+    @PostMapping("/login")
+    public ResponseEntity<?> loginUser(@RequestBody Users loginRequest) {
+        Optional<Users> user = userService.findByUsername(loginRequest.getUsername());
 
-		if (user.isPresent() && loginRequest.getPassword().equals(user.get().getPassword())) { // Simple password check
-			// Authentication succeeded, return the role of the user
-			System.out.println(loginRequest.getUsername());
-			return ResponseEntity.ok(Map.of("role", user.get().getRole().toString().toLowerCase(), "firstname",
-					user.get().getFirstName(),"id",user.get().getId(), "success", true));
-		} else {
-			// Authentication failed
-			return ResponseEntity.ok(Map.of("success", false, "message", "Invalid username or password"));
-		}
-	}
+        if (user.isPresent() && loginRequest.getPassword().equals(user.get().getPassword())) {
+            return ResponseEntity.ok(Map.of(
+                    "role", user.get().getRole().toString().toLowerCase(),
+                    "firstname", user.get().getFirstName(),
+                    "id", user.get().getId(),
+                    "success", true
+            ));
+        } else {
+            return ResponseEntity.ok(Map.of("success", false, "message", "Invalid username or password"));
+        }
+    }
 
-	@PostMapping("/register")
-	public ResponseEntity<?> registerUser(@RequestBody Users user) {
-		try {
-			System.out.println("First name:"+user.getFirstName()+" Last name :"+user.getLastName());
-			Optional<Users> existingUser = userService.findByUsername(user.getUsername());
+    // Register endpoint
+    @PostMapping("/register")
+    public ResponseEntity<?> registerUser(@RequestBody Users user) {
+        try {
+            Optional<Users> existingUser = userService.findByUsername(user.getUsername());
 
-			if (existingUser.isPresent()) {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-						.body(Map.of("error", "Username already exists. Please choose a different one."));
-			}
-			userService.createUser(user);
-			return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message", "User registered successfully"));
-		} catch (Exception e) { // Catch potential exceptions (e.g., duplicate username)
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(Map.of("error", "Failed to register user: " + e.getMessage()));
-		}
-	}
+            if (existingUser.isPresent()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(Map.of("error", "Username already exists. Please choose a different one."));
+            }
+            userService.createUser(user);
+            return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message", "User registered successfully"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("error", "Failed to register user: " + e.getMessage()));
+        }
+    }
+    
+    @PostMapping("/resetPassword")
+    public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> request) {
+        String username = request.get("username");
+        String currentPassword = request.get("currentPassword");
+        String newPassword = request.get("newPassword");
 
-	private static final List<String> STATES = Arrays.asList("Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar",
-			"Chhattisgarh", "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka", "Kerala",
-			"Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab",
-			"Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal",
-			"Andaman and Nicobar Islands", "Chandigarh", "Dadra and Nagar Haveli and Daman and Diu", "Lakshadweep",
-			"Delhi", "Puducherry");
+        // Validate username and current password
+        Users user = userService.findByUsername(username)
+                .orElse(null);
 
-	// GET endpoint to return list of states
-	@GetMapping("/states")
-	public Map<String, Object> getStates() {
-		return Map.of("states", STATES); // Return the list of states wrapped in a "states" key
-	}
+        if (user == null || !user.getPassword().equals(currentPassword)) {
+            return ResponseEntity.ok(Map.of("success", false, "message", "Invalid credentials"));
+        }
 
-	private static final Map<String, List<Map<String, String>>> functionHalls = new HashMap<>();
+        // Update the password if the current password is valid
+        user.setPassword(newPassword);
+        userService.updateUser(user);
 
-	static {
-		functionHalls.put("Andhra Pradesh", Arrays.asList(createHall("Sree Function Hall", "Hyderabad"),
-				createHall("Shree Marriages", "Visakhapatnam"), createHall("Royal Function Palace", "Vijayawada"),
-				createHall("Lakshmi Kalyana Mandapam", "Guntur"), createHall("Sri Venkateshwara Hall", "Tirupati")));
-		functionHalls.put("Tamil Nadu", Arrays.asList(createHall("Chennai Wedding Hall", "Chennai"),
-				createHall("Kumar's Banquet", "Coimbatore")));
-		functionHalls.put("Telangana", Arrays.asList(createHall("Hyderabad Grand Hall", "Hyderabad"),
-				createHall("Raj Function Plaza", "Warangal")));
-	}
-
-// Static variable to generate unique IDs
-	private static int hallIdCounter = 1;
-
-// Modified createHall method to generate unique IDs
-	private static Map<String, String> createHall(String name, String location) {
-		Map<String, String> hall = new HashMap<>();
-		hall.put("id", String.valueOf(hallIdCounter++)); // Auto-increment ID
-		hall.put("name", name);
-		hall.put("location", location);
-		return hall;
-	}
-
-// Endpoint to fetch function halls by state
-	@GetMapping("/functionHalls/{state}")
-	public Map<String, Object> getFunctionHallsByState(@PathVariable String state) {
-		System.out.println(state);
-		List<Map<String, String>> halls = functionHalls.getOrDefault(state, new ArrayList<>());
-		return Map.of("functionHalls", halls);
-	}
-
-// Endpoint to fetch details of a specific function hall by state and hallId
-	@GetMapping("/functionHallDetails/{state}/{hallId}")
-	public Map<String, Object> getFunctionHallDetails(@PathVariable String state, @PathVariable int hallId) {
-		System.out.println("Fetching details for Hall ID: " + hallId + " in state: " + state);
-
-		List<Map<String, String>> halls = functionHalls.getOrDefault(state, new ArrayList<>());
-
-		// Find the hall with the matching ID in the list of halls for that state
-		for (Map<String, String> hall : halls) {
-			if (Integer.parseInt(hall.get("id")) == hallId) {
-				// Return the details of the matching hall
-				return Map.of("functionHall", hall);
-			}
-		}
-
-		// Return a message if hall is not found
-		return Map.of("error", "Function hall not found");
-
-	}
+        // Return success response
+        return ResponseEntity.ok(Map.of("success", true, "message", "Password updated successfully"));
+    }
 }
