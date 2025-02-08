@@ -6,14 +6,15 @@ import AboutUs from './Components/AboutUs';
 import MyBooking from './Components/MyBooking';
 import Login from './Components/Login';
 import Register from "./Components/Register";
-
+import ConfirmBooking from './Components/ConfirmBooking'
 import Booking from './Components/Booking';
 import { AppProvider, AppContext } from './Components/AppContext';  
 import AdminHome from './Components/AdminHome';
 import { useContext, useEffect } from 'react';
 import FunctionHall from './Components/FunctionHall';
 import Registration from './Components/Registration';
-import Profile from './Components/Profile';
+import UserHome from './Components/UserHome';
+
 
 
 function AppContent() {
@@ -48,11 +49,13 @@ function AppContent() {
           <Route path='/ContactUs' element={<AboutUs spotlight={spotlight} />} />
 
           <Route path='/MyBooking' element={<MyBooking />} />
-          <Route path='/Login/*' element={<Login />} />
+          <Route path='/Login/*' element={<Login />} /> 
           <Route path='/Registration' element={<Registration />} />
           <Route path='/Register' element={<Register />} />
           <Route path='/Booking' element={<Booking />} />
           <Route path='/FunctionHall' element={<FunctionHall />} />
+          <Route path='/ConfirmBooking' element={<ConfirmBooking />} />
+          <Route path='/UserHome' element={<UserHome />} />
         </Routes>
       )}
     </div>

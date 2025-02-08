@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { AppContext } from "./AppContext";
+import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const FunctionHall = () => {
@@ -7,9 +8,11 @@ const FunctionHall = () => {
   const { functionHallId, role, stateList } = useContext(AppContext);
   const [hallDetails, setHallDetails] = useState(null);
   const [loading, setLoading] = useState(true);
+
   const [error, setError] = useState(null);
   const [formData, setFormData] = useState({});
-  const [receivedState, setReceivedState] = useState(null);
+
+  const navigate = useNavigate();
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -23,19 +26,45 @@ const FunctionHall = () => {
     setFormData({ ...formData, state: e.target.value });
   };
 
+  const handleBookNow = async () => {
+    try {
+      console.log("Fetching latest hall details before booking...");
+      
+      const response = await fetch(`http://localhost:3000/api/functionhalls/${functionHallId}/details`);
+      const data = await response.json();
+      
+      if (!response.ok || !data || Object.keys(data).length === 0) {
+        console.error("Failed to fetch valid function hall details, cannot proceed.");
+        return;
+      }
+  
+      console.log("Navigating with updated hallDetails:", data);
+  
+      // Navigate with the freshly fetched data
+      navigate("/ConfirmBooking", { state: data });
+  
+    } catch (error) {
+      console.error("Error fetching function hall details:", error);
+    }
+  };
+
   const handleSave = () => {
-    // Prepare the updated data to be sent to the backend
+    // Ensure IDs are numbers before sending
     const updatedData = {
-      hallId: formData.hallId,
+      hallId: parseInt(formData.hallId, 10), // Ensure hallId is a number
       hallName: formData.name,
       location: formData.location,
       state: formData.state,
-      admin: { id: formData.adminId },
+      admin: {
+        id: parseInt(formData.adminId, 10),   // Ensure adminId is a number
+        name: formData.adminName,
+        contact: formData.adminContact
+      },
     };
 
     // Send the data to backend to update
     fetch("http://localhost:3000/api/functionhalls/update", {
-      method: "POST",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
@@ -47,7 +76,7 @@ const FunctionHall = () => {
           setError(data.error);
         } else {
           console.log("Data saved successfully:", data);
-          // After successful update, fetch the updated hall details
+          // After successful update, fetch the updated hall details again
           fetchFunctionHallDetails();  // Call the function to fetch updated details
         }
       })
@@ -59,6 +88,7 @@ const FunctionHall = () => {
   };
 
   const fetchFunctionHallDetails = () => {
+    setLoading(true); // Set loading to true before making the request
     fetch(`http://localhost:3000/api/functionhalls/${functionHallId}/details`)
       .then((response) => response.json())
       .then((data) => {
@@ -67,8 +97,6 @@ const FunctionHall = () => {
         } else {
           setHallDetails(data);  // Update function hall details in state
           setFormData(data);      // Set the form data with the updated details
-          setReceivedState(data.state); // Update received state
-          setIsEditing(false);     // Exit edit mode
         }
         setLoading(false);       // Stop loading
       })
@@ -86,6 +114,7 @@ const FunctionHall = () => {
       return;
     }
 
+    console.log("Fetching details for hallId:", functionHallId);
     // Fetch the function hall details when the component is mounted
     fetchFunctionHallDetails();
   }, [functionHallId]);
@@ -126,7 +155,7 @@ const FunctionHall = () => {
                       id="state"
                       className="form-control"
                       name="state"
-                      value={receivedState || "Not Available"}
+                      value={formData.state || "Not Available"}
                       disabled
                     />
                   )}
@@ -134,7 +163,7 @@ const FunctionHall = () => {
               </tr>
 
               <tr>
-                <td><strong>Function Hall Name</strong></td>
+                <td><strong>Function Hall Name:</strong></td>
                 <td>
                   <input
                     type="text"
@@ -149,7 +178,7 @@ const FunctionHall = () => {
                 <td>
                   <div className="col text-end">
                     {role === "user" ? (
-                      <button className="btn btn-primary action-btn" type="button">
+                      <button className="btn btn-primary action-btn" type="button" onClick={handleBookNow}>
                         Book Now
                       </button>
                     ) : role === "admin" ? (
@@ -181,16 +210,31 @@ const FunctionHall = () => {
               </tr>
 
               <tr>
-                <td><strong>Admin:</strong></td>
+                <td><strong>Manager Name:</strong></td>
                 <td>
                   <input
                     type="text"
-                    id="admin"
+                    id="adminName"
                     className="form-control"
-                    name="admin"
-                    value={formData.admin || ""}
+                    name="adminName"
+                    value={formData.adminName || ""}
                     onChange={handleChange}
-                    disabled
+                    disabled={!isEditing}
+                  />
+                </td>
+              </tr>
+
+              <tr>
+                <td><strong>Manager Contact:</strong></td>
+                <td>
+                  <input
+                    type="text"
+                    id="adminContact"
+                    className="form-control"
+                    name="adminContact"
+                    value={formData.adminContact || ""}
+                    onChange={handleChange}
+                    disabled={!isEditing}
                   />
                 </td>
               </tr>

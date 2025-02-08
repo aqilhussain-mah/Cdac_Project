@@ -31,4 +31,25 @@ public class UsersService {
     	userRepository.save(user);  // This will update the user with the new password
     }
     
+    public Users updateAdminDetails(Users updatedData) {
+        Optional<Users> existingUser = userRepository.findById(updatedData.getId());
+
+        if (existingUser.isPresent()) {
+            Users user = existingUser.get();
+
+            // Update each property only if it's provided (non-null/non-empty)
+            if (updatedData.getFirstName() != null && !updatedData.getFirstName().isEmpty()) {
+                user.setFirstName(updatedData.getFirstName());
+            }
+
+            if (updatedData.getMobile() != null && !updatedData.getMobile().isEmpty()) {
+                user.setMobile(updatedData.getMobile());
+            }
+
+            return userRepository.save(user); // Save updated user details
+        } else {
+            throw new RuntimeException("Admin (user) not found.");
+        }
+    }
+    
 }

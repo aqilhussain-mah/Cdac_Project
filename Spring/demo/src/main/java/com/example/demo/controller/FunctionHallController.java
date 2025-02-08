@@ -6,7 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.Entity.FunctionHall;
+import com.example.demo.Entity.Users;
 import com.example.demo.services.FunctionHallService;
+import com.example.demo.services.UsersService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,112 +20,102 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "http://localhost:5173") // Frontend allowed to access
 public class FunctionHallController {
 
-    @Autowired
-    private FunctionHallService functionHallService;
+	@Autowired
+	private FunctionHallService functionHallService;
 
-    // Get function halls by state
-    @GetMapping("/state/{state}")
-    public ResponseEntity<List<Map<String, String>>> getFunctionHallsByState(@PathVariable String state) {
-        List<Map<String, String>> halls = functionHallService.getFunctionHallsByState(state).stream()
-                .map(hall -> Map.of(
-                        "id", String.valueOf(hall.getHallId()),
-                        "name", hall.getHallName(),
-                        "state", hall.getState(),
-                        "location", hall.getLocation(),
-                        "admin", hall.getAdmin().getUsername()
-                ))
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(halls);
-    }
+	@Autowired
+	private UsersService userService;
 
-    // Get function hall details by hallId
-    @GetMapping("/{hallId}/details")
-    public ResponseEntity<Map<String, String>> getFunctionHallDetails(@PathVariable int hallId) {
-        FunctionHall hall = functionHallService.getFunctionHallDetails(hallId);
-        if (hall == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Function hall not found"));
-        }
-        return ResponseEntity.ok(Map.of(
-                "state", hall.getState(),
-                "name", hall.getHallName(),
-                "location", hall.getLocation(),
-                "admin", hall.getAdmin().getUsername()
-        ));
-    }
+	// Get function halls by state
+	@GetMapping("/state/{state}")
+	public ResponseEntity<List<Map<String, String>>> getFunctionHallsByState(@PathVariable String state) {
+		List<Map<String, String>> halls = functionHallService.getFunctionHallsByState(state).stream()
+				.map(hall -> Map.of("id", String.valueOf(hall.getHallId()), "name", hall.getHallName(), "state",
+						hall.getState(), "location", hall.getLocation(), "admin", hall.getAdmin().getUsername()))
+				.collect(Collectors.toList());
+		return ResponseEntity.ok(halls);
+	}
 
-    // Add a new function hall (including adminId)
-    @PostMapping("/add")
-    public ResponseEntity<Map<String, String>> addFunctionHall(@RequestParam String state,
-                                                               @RequestParam String name,
-                                                               @RequestParam String location,
-                                                               @RequestParam int adminId) {
-        try {
-            FunctionHall addedHall = functionHallService.addFunctionHall(state, name, location, adminId);
-            return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("id", String.valueOf(addedHall.getHallId())));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", e.getMessage()));
-        }
-    }
+	@GetMapping("/{hallId}/details")
+	public ResponseEntity<Map<String, Object>> getFunctionHallDetails(@PathVariable int hallId) {
+		FunctionHall hall = functionHallService.getFunctionHallDetails(hallId);
+		if (hall == null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Function hall not found"));
+		}
 
-    // Get all function halls
-    @GetMapping("/list")
-    public ResponseEntity<List<Map<String, String>>> getAllFunctionHalls() {
-        List<FunctionHall> allHalls = functionHallService.getAllFunctionHalls();
-        List<Map<String, String>> hallList = allHalls.stream()
-                .map(hall -> Map.of(
-                        "id", String.valueOf(hall.getHallId()),
-                        "name", hall.getHallName(),
-                        "location", hall.getLocation(),
-                        "admin", hall.getAdmin().getUsername()
-                ))
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(hallList);
-    }
+		Users admin = hall.getAdmin(); // Get admin details
 
-    // Search function halls by term (hall name, location, or state)
-    @GetMapping("/search")
-    public ResponseEntity<List<Map<String, Object>>> searchFunctionHalls(@RequestParam String query) {
-        List<Map<String, Object>> result = functionHallService.searchFunctionHalls(query);
-        return ResponseEntity.ok(result);
-    }
+		// Create response with additional admin details
+		Map<String, Object> response = new HashMap<>();
+		response.put("state", hall.getState());
+		response.put("name", hall.getHallName());
+		response.put("location", hall.getLocation());
 
-    // Get function halls by adminId
-    @GetMapping("/admin/{adminId}")
-    public ResponseEntity<List<Map<String, String>>> getFunctionHallsByAdmin(@PathVariable long adminId) {
-        List<Map<String, String>> halls = functionHallService.getFunctionHallsByAdminId(adminId).stream()
-                .map(hall -> Map.of(
-                        "id", String.valueOf(hall.getHallId()),
-                        "name", hall.getHallName(),
-                        "state", hall.getState(),
-                        "location", hall.getLocation()
-                ))
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(halls);
-    }
+		if (admin != null) {
+			response.put("adminId", admin.getId());
+			response.put("adminName", admin.getFirstName());
+			response.put("adminContact", admin.getMobile());
+		} else {
+			response.put("admin", "No admin assigned");
+		}
 
-    // Update Function Hall
-    @PostMapping("/update")
-    public ResponseEntity<Map<String, Object>> updateFunctionHall(@RequestBody FunctionHall updatedHall) {
-        try {
-            // Validate that the hall exists
-            FunctionHall hall = functionHallService.getFunctionHallDetails(updatedHall.getHallId());
-            if (hall == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Function hall not found"));
-            }
+		return ResponseEntity.ok(response);
+	}
 
-            // Update the details of the hall
-            hall.setHallName(updatedHall.getHallName());
-            hall.setLocation(updatedHall.getLocation());
-            hall.setState(updatedHall.getState());
+	// Add a new function hall (including adminId)
+	@PostMapping("/add")
+	public ResponseEntity<Map<String, String>> addFunctionHall(@RequestParam String state, @RequestParam String name,
+			@RequestParam String location, @RequestParam int adminId) {
+		try {
+			FunctionHall addedHall = functionHallService.addFunctionHall(state, name, location, adminId);
+			return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("id", String.valueOf(addedHall.getHallId())));
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", e.getMessage()));
+		}
+	}
 
-            // Save the updated function hall
-            FunctionHall updated = functionHallService.updateFunctionHall(hall);
-            Map<String, Object> response = new HashMap<>();
-            response.put("message", "Function hall updated successfully");
-            response.put("hall", updated);
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", e.getMessage()));
-        }
-    }
+	// Get all function halls
+	@GetMapping("/list")
+	public ResponseEntity<List<Map<String, String>>> getAllFunctionHalls() {
+		List<FunctionHall> allHalls = functionHallService.getAllFunctionHalls();
+		List<Map<String, String>> hallList = allHalls
+				.stream().map(hall -> Map.of("id", String.valueOf(hall.getHallId()), "name", hall.getHallName(),
+						"location", hall.getLocation(), "admin", hall.getAdmin().getUsername()))
+				.collect(Collectors.toList());
+		return ResponseEntity.ok(hallList);
+	}
+
+	// Search function halls by term (hall name, location, or state)
+	@GetMapping("/search")
+	public ResponseEntity<List<Map<String, Object>>> searchFunctionHalls(@RequestParam String query) {
+		List<Map<String, Object>> result = functionHallService.searchFunctionHalls(query);
+		return ResponseEntity.ok(result);
+	}
+
+	// Get function halls by adminId
+	@GetMapping("/admin/{adminId}")
+	public ResponseEntity<List<Map<String, String>>> getFunctionHallsByAdmin(@PathVariable long adminId) {
+		List<Map<String, String>> halls = functionHallService
+				.getFunctionHallsByAdminId(adminId).stream().map(hall -> Map.of("id", String.valueOf(hall.getHallId()),
+						"name", hall.getHallName(), "state", hall.getState(), "location", hall.getLocation()))
+				.collect(Collectors.toList());
+		return ResponseEntity.ok(halls);
+	}
+
+//	@PutMapping("/update")
+//	public ResponseEntity<String> updateFunctionHallAndAdminDetails(
+//			@RequestBody FunctionHall updateRequest) {
+//		try {	
+//			// Update Function Hall details
+//			FunctionHall updatedFunctionHall = functionHallService.updateFunctionHall(updateRequest.getFunctionHall());
+//
+//			// Update Admin details (User details)
+//			userService.updateUserDetails(updateRequest.getAdmin());
+//
+//			return ResponseEntity.ok("Function Hall and Admin details updated successfully");
+//		} catch (Exception e) {
+//			return ResponseEntity.status(400).body("Error updating details: " + e.getMessage());
+//		}
+//	}
+
 }

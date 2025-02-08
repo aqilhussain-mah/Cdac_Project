@@ -31,36 +31,22 @@
   animation: fadeIn 0.3s ease-in-out; /* Add animation to the modal */
 }
 
-/* ✅ Proper Close Button */
-/* Close Button - Properly Positioned */
+/* Close Button */
 .profile-close-btn {
   position: absolute;
-  top: 10px; /* Adjust to move it down if needed */
-  right: 10px; /* Align to top-right corner */
+  top: 10px;
+  right: 10px;
   background: transparent;
   border: none;
   cursor: pointer;
-  z-index: 10; /* Ensure it's above other elements */
+  font-size: 1.5rem;
+  color: black;
   transition: transform 0.3s ease; /* Smooth transition for scaling */
 }
 
-/* Close Button Background */
-.close-button-container {
-  background: #343a40; /* Dark theme background */
-  padding: 5px;
-  border-radius: 5px;
-}
-
-/* Hover effect */
+/* Hover effect for close button */
 .profile-close-btn:hover {
   transform: scale(1.2); /* Scale up the button by 20% */
-}
-
-
-
-/* Remove duplicate close button issue */
-.profile-modal .btn-close {
-  display: none; /* Hide any other close button */
 }
 
 /* Modal Links */

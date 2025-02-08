@@ -12,6 +12,7 @@ import com.example.demo.repository.UsersRepository;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Optional;
 import java.util.HashMap;
 
 @Service
@@ -76,29 +77,29 @@ public class FunctionHallService {
         return functionHallRepository.findByAdmin_Id(adminId);
     }
 
-    // Updated method for updating the FunctionHall
-    public FunctionHall updateFunctionHall(FunctionHall updatedHall) {
-        int hallId = updatedHall.getHallId();
+    public FunctionHall updateFunctionHall(FunctionHall updatedData) {
+        Optional<FunctionHall> existingHall = functionHallRepository.findById(updatedData.getHallId());
 
-        FunctionHall existingHall = functionHallRepository.findById(hallId).orElse(null);
+        if (existingHall.isPresent()) {
+            FunctionHall functionHall = existingHall.get();
 
-        if (existingHall == null) {
-            throw new RuntimeException("Function hall not found");
-        }
-
-        existingHall.setHallName(updatedHall.getHallName());
-        existingHall.setLocation(updatedHall.getLocation());
-        existingHall.setState(updatedHall.getState());
-
-        if (updatedHall.getAdmin() != null && updatedHall.getAdmin().getId() != null) {
-            Users admin = usersRepository.findById(updatedHall.getAdmin().getId()).orElse(null);
-            if (admin != null) {
-                existingHall.setAdmin(admin);
-            } else {
-                throw new RuntimeException("Admin not found");
+            // Update each property only if it's provided (non-null/non-empty)
+            if (updatedData.getHallName() != null && !updatedData.getHallName().isEmpty()) {
+                functionHall.setHallName(updatedData.getHallName());
             }
-        }
 
-        return functionHallRepository.save(existingHall);
+            if (updatedData.getLocation() != null && !updatedData.getLocation().isEmpty()) {
+                functionHall.setLocation(updatedData.getLocation());
+            }
+
+            if (updatedData.getState() != null && !updatedData.getState().isEmpty()) {
+                functionHall.setState(updatedData.getState());
+            }
+
+            return functionHallRepository.save(functionHall); // Save updated function hall
+        } else {
+            throw new RuntimeException("Function hall not found.");
+        }
     }
+
 }
