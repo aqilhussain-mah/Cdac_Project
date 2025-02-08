@@ -77,6 +77,17 @@ public class FunctionHallService {
         return functionHallRepository.findByAdmin_Id(adminId);
     }
 
+    
+    public void deleteFunctionHall(int hallId) {
+        Optional<FunctionHall> functionHall = functionHallRepository.findById(hallId);
+        if (functionHall.isPresent()) {
+            functionHallRepository.delete(functionHall.get());
+        } else {
+            throw new RuntimeException("Function hall not found with ID: " + hallId);
+        }
+    }
+    
+    
     public FunctionHall updateFunctionHall(FunctionHall updatedData) {
         Optional<FunctionHall> existingHall = functionHallRepository.findById(updatedData.getHallId());
 

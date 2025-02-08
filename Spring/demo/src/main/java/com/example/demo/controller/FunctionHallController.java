@@ -101,6 +101,16 @@ public class FunctionHallController {
 				.collect(Collectors.toList());
 		return ResponseEntity.ok(halls);
 	}
+	
+	@DeleteMapping("/{hallId}")
+    public ResponseEntity<Map<String, String>> deleteFunctionHall(@PathVariable int hallId) {
+        try {
+            functionHallService.deleteFunctionHall(hallId); // Delegate deletion to service
+            return ResponseEntity.ok(Map.of("message", "Function hall deleted successfully"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Function hall not found"));
+        }
+    }
 
 //	@PutMapping("/update")
 //	public ResponseEntity<String> updateFunctionHallAndAdminDetails(
