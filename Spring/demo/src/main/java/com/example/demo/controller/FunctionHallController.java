@@ -1,3 +1,4 @@
+ 
 package com.example.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,12 +8,15 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.Entity.FunctionHall;
 import com.example.demo.Entity.Users;
+import com.example.demo.repository.FunctionHallRepository;
+import com.example.demo.repository.UsersRepository;
 import com.example.demo.services.FunctionHallService;
 import com.example.demo.services.UsersService;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -22,6 +26,13 @@ public class FunctionHallController {
 
 	@Autowired
 	private FunctionHallService functionHallService;
+	
+	
+	@Autowired
+	private UsersRepository usersRepository;
+	
+	@Autowired
+	private FunctionHallRepository functionHallRepository;
 
 	@Autowired
 	private UsersService userService;
@@ -64,14 +75,23 @@ public class FunctionHallController {
 
 	// Add a new function hall (including adminId)
 	@PostMapping("/add")
-	public ResponseEntity<Map<String, String>> addFunctionHall(@RequestParam String state, @RequestParam String name,
-			@RequestParam String location, @RequestParam int adminId) {
-		try {
-			FunctionHall addedHall = functionHallService.addFunctionHall(state, name, location, adminId);
-			return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("id", String.valueOf(addedHall.getHallId())));
-		} catch (IllegalArgumentException e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", e.getMessage()));
-		}
+	public ResponseEntity<?> addFunctionHall(@RequestBody FunctionHall functionHall) {
+	    try {
+	        // Validate Admin User
+	        Optional<Users> admin = usersRepository.findById(functionHall.getAdmin().getId());
+	        if (admin.isEmpty()) {
+	            return ResponseEntity.badRequest().body("Invalid admin ID");
+	        }
+
+	        // Set admin before saving
+	        functionHall.setAdmin(admin.get());
+
+	        // Save Function Hall (State is now a String, no lookup required)
+	        FunctionHall savedHall = functionHallRepository.save(functionHall);
+	        return ResponseEntity.ok(savedHall);
+	    } catch (Exception e) {
+	        return ResponseEntity.badRequest().body("Error saving function hall: " + e.getMessage());
+	    }
 	}
 
 	// Get all function halls
@@ -112,20 +132,20 @@ public class FunctionHallController {
         }
     }
 
-//	@PutMapping("/update")
-//	public ResponseEntity<String> updateFunctionHallAndAdminDetails(
-//			@RequestBody FunctionHall updateRequest) {
-//		try {	
-//			// Update Function Hall details
-//			FunctionHall updatedFunctionHall = functionHallService.updateFunctionHall(updateRequest.getFunctionHall());
-//
-//			// Update Admin details (User details)
-//			userService.updateUserDetails(updateRequest.getAdmin());
-//
-//			return ResponseEntity.ok("Function Hall and Admin details updated successfully");
-//		} catch (Exception e) {
-//			return ResponseEntity.status(400).body("Error updating details: " + e.getMessage());
-//		}
-//	}
+	@PostMapping("/update")
+	public ResponseEntity<String> updateFunctionHallAndAdminDetails(
+			@RequestBody FunctionHall updateRequest) {
+		try {	
+			// Update Function Hall details
+			FunctionHall updatedFunctionHall = functionHallService.updateFunctionHall(updateRequest);
+
+			// Update Admin details (User details)
+			userService.updateAdminDetails(updateRequest.getAdmin());
+
+			return ResponseEntity.ok("Function Hall and Admin details updated successfully");
+		} catch (Exception e) {
+			return ResponseEntity.status(400).body("Error updating details: " + e.getMessage());
+		}
+	}
 
 }

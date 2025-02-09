@@ -24,10 +24,10 @@ public class FunctionHall {
     @Column(name = "location", nullable = false)
     private String location;
 
-    @Column(name = "state", nullable = false) // This is now a String
+    @Column(name = "state", nullable = false) // Now storing state as a String
     private String state;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "admin_id", referencedColumnName = "id") 
     @JsonIgnoreProperties({"functionHalls", "password"}) 
     private Users admin;

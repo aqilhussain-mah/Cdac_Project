@@ -1,8 +1,9 @@
 import { NavLink, useNavigate } from 'react-router-dom';
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";  // Import the eye icons
 import axios from "axios";  // Import axios for API calls
 import "./ResetPassword.css";
+import { AppContext } from './AppContext';
 
 const ResetPassword = () => {
     const [currentPasswordVisible, setCurrentPasswordVisible] = useState(false);
@@ -15,6 +16,7 @@ const ResetPassword = () => {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
+    const { logout } = useContext(AppContext);
 
     const navigate = useNavigate();  // For redirecting to login page
 
@@ -42,6 +44,7 @@ const ResetPassword = () => {
             if (response.data.success) {
                 // If the response indicates success, show success message and redirect to login page
                 alert(response.data.message);  // Display success message
+                logout();
                 navigate("/Login");  // Redirect to login page
             } else {
                 // If the credentials are invalid, display error message

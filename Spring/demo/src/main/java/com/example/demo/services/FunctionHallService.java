@@ -76,6 +76,9 @@ public class FunctionHallService {
     public List<FunctionHall> getFunctionHallsByAdminId(long adminId) {
         return functionHallRepository.findByAdmin_Id(adminId);
     }
+    public FunctionHall saveFunctionHall(FunctionHall functionHall) {
+        return functionHallRepository.save(functionHall);
+    }
 
     
     public void deleteFunctionHall(int hallId) {
@@ -89,25 +92,26 @@ public class FunctionHallService {
     
     
     public FunctionHall updateFunctionHall(FunctionHall updatedData) {
-        Optional<FunctionHall> existingHall = functionHallRepository.findById(updatedData.getHallId());
+      //  Optional<FunctionHall> existingHall = functionHallRepository.findById(updatedData.getHallId());
+    	FunctionHall existingHall=functionHallRepository.findByHallId(updatedData.getHallId());
 
-        if (existingHall.isPresent()) {
-            FunctionHall functionHall = existingHall.get();
+        if (existingHall!=null) {
+          //  FunctionHall functionHall = existingHall.get();
 
             // Update each property only if it's provided (non-null/non-empty)
             if (updatedData.getHallName() != null && !updatedData.getHallName().isEmpty()) {
-                functionHall.setHallName(updatedData.getHallName());
+            	existingHall.setHallName(updatedData.getHallName());
             }
 
             if (updatedData.getLocation() != null && !updatedData.getLocation().isEmpty()) {
-                functionHall.setLocation(updatedData.getLocation());
+            	existingHall.setLocation(updatedData.getLocation());
             }
 
             if (updatedData.getState() != null && !updatedData.getState().isEmpty()) {
-                functionHall.setState(updatedData.getState());
+            	existingHall.setState(updatedData.getState());
             }
 
-            return functionHallRepository.save(functionHall); // Save updated function hall
+            return functionHallRepository.save(existingHall); // Save updated function hall
         } else {
             throw new RuntimeException("Function hall not found.");
         }

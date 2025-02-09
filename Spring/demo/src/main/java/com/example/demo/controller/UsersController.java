@@ -53,7 +53,26 @@ public class UsersController {
                     .body(Map.of("error", "Failed to register user: " + e.getMessage()));
         }
     }
+ // Fetch user details by ID
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getUserDetails(@PathVariable Long id) {
+        Optional<Users> user = userService.findById(id);
+        if (user.isPresent()) {
+            return ResponseEntity.ok(user.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "User not found"));
+        }
+    }
     
+    @PutMapping("/update")
+    public ResponseEntity<?> updateUserDetails(@RequestBody Users updatedUser) {
+        try {
+            Users updated = userService.updateAdminDetails(updatedUser);
+            return ResponseEntity.ok(Map.of("success", true, "message", "User updated successfully"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Failed to update user details"));
+        }
+    }
     @PostMapping("/resetPassword")
     public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> request) {
         String username = request.get("username");
