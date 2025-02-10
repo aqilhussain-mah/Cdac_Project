@@ -35,13 +35,11 @@ function AppContent() {
 
   return (
     <div className='App'>
-      {/* Agar role 'admin' hai toh sirf AdminHome show hoga */}
+      
       {role === 'admin' && <AdminHome />}
 
-      {/* Agar role 'admin' nahi hai aur path '/adminhome' nahi hai toh NavigationBar dikhana hai */}
       {role !== 'admin' && location.pathname !== '/adminhome' && <NavigationBar />}
 
-      {/* Routes ko NavigationBar ke andar nahi rakhna chahiye */}
       {role !== 'admin' && (
         <Routes>
           <Route path='/' element={<Home />} />

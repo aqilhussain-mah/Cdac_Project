@@ -1,9 +1,11 @@
 import React, { useContext, useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom'
 import { AppContext } from "./AppContext";
 
 const ConfirmBooking = () => {
     const { userId, functionHallId, setFunctionHallId } = useContext(AppContext);
+    const navigate = useNavigate();
     const [bookingData, setBookingData] = useState({});
     const [guests, setGuests] = useState("");
     const [date, setDate] = useState("");
@@ -47,6 +49,7 @@ const ConfirmBooking = () => {
 
             const response = await axios.post("http://localhost:3000/api/bookings/create", bookingPayload);
             alert("Booking successful!");
+            navigate("/MyBooking");
         } catch (error) {
             console.error("Error creating booking:", error);
             alert("Booking failed. Please try again.");

@@ -5,9 +5,10 @@ import { AppContext } from "./AppContext"; // Import AppContext
 import FunctionHall from "./FunctionHall"; // Assuming you have a FunctionHall component
 import axios from "axios"; // Import axios for making HTTP requests
 import AddFunctionHall from './AddFunctionHall';
+import UserHome from './UserHome';
 
 const AdminHome = ({ setView }) => {
-  const { userId ,username, updateFunctionHallId, functionHallId } = useContext(AppContext); // Get username and functionHallId from context
+  const { userId, username, updateFunctionHallId, functionHallId } = useContext(AppContext); // Get username and functionHallId from context
   const [activeView, setActiveView] = useState("dashboard");
   const [functionHalls, setFunctionHalls] = useState([]);
   const [selectedState, setSelectedState] = useState("");// Assuming you want to keep it static for now
@@ -106,6 +107,9 @@ const AdminHome = ({ setView }) => {
     updateFunctionHallId(null); // Ensure no hallId is set for a new function hall
     setActiveView("addFunctionHall"); // Switch to the "Add Function Hall" view
   };
+  const handleMydetails = () =>{
+    setActiveView("myDetails");
+  }
 
   const confirmDelete = async () => {
     try {
@@ -183,8 +187,8 @@ const AdminHome = ({ setView }) => {
 
                 <div className=" col-3 card" onClick={() => { setActiveView("addFunctionHall"); updateFunctionHallId(null); }}>
                   {/* <div className="card-body text-center"> */}
-                    <i className="fas fa-plus-circle fa-3x"></i> {/* Font Awesome Plus Icon */}
-                    <p className="card-title">Add New Function Hall</p>
+                  <i className="fas fa-plus-circle fa-3x"></i> {/* Font Awesome Plus Icon */}
+                  <p className="card-title">Add New Function Hall</p>
                   {/* </div> */}
                 </div>
 
@@ -234,7 +238,7 @@ const AdminHome = ({ setView }) => {
                 + Add Function Hall
               </button>
               <div style={{ display: 'flex', justifyContent: 'flex-end' }}> {/* Flexbox container */}
-                <button className="btn btn-secondary">
+                <button className="btn btn-secondary" onClick={() => {handleMydetails(true);}}>
                   <i className="fas fa-cog"></i> My details
                 </button>
               </div>
@@ -377,8 +381,8 @@ const AdminHome = ({ setView }) => {
             <FunctionHall hallId={functionHallId} />
           )}
 
-{activeView === "addFunctionHall" && <AddFunctionHall setActiveView={setActiveView} />}
-
+          {activeView === "addFunctionHall" && <AddFunctionHall setActiveView={setActiveView} />}
+          {activeView === "myDetails" && <UserHome setActiveView={setActiveView} />}
 
 
           {/* Delete Confirmation Modal */}
