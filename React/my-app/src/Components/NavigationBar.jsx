@@ -29,7 +29,7 @@ const NavigationBar = () => {
               </NavLink>
             </div>
             <div className="me-4">
-              <NavLink to="/Location" className="nav-link">
+              <NavLink to="/Instruction" className="nav-link">
                 <i className="bi bi-info-circle"></i> Instructions
               </NavLink>
             </div>

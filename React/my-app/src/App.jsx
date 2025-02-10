@@ -14,6 +14,7 @@ import { useContext, useEffect } from 'react';
 import FunctionHall from './Components/FunctionHall';
 import Registration from './Components/Registration';
 import UserHome from './Components/UserHome';
+import Instructions from './Components/Instructions';
 
 
 
@@ -47,7 +48,7 @@ function AppContent() {
 
           <Route path='/About' element={<AboutUs spotlight={spotlight} />} />
           <Route path='/ContactUs' element={<AboutUs spotlight={spotlight} />} />
-
+          <Route path='/Instruction' element={<Instructions />} />
           <Route path='/MyBooking' element={<MyBooking />} />
           <Route path='/Login/*' element={<Login />} /> 
           <Route path='/Registration' element={<Registration />} />

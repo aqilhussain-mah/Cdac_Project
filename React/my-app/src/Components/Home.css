@@ -15,7 +15,7 @@
 .Home-container .overlay-text {
   position: absolute;
   top: 60%;
-  left: 50%;
+  left: 50%;  
   transform: translate(-50%, -50%);
   color: #ffffff;
   padding: 10px 20px;
@@ -25,6 +25,7 @@
 }
 
 .Home-container .overlay-button {
+  width: auto;
   position: absolute;
   background-color:  #ed9834;
   top: 75%;
@@ -61,7 +62,7 @@
     width: 100%;
   }
 }
-.left-section {
+.Home-container .left-section {
   background-color: #eab676;
   display: flex;
   justify-content: center;
@@ -69,13 +70,13 @@
   min-height: 100%;
 }
 
-.social-icons i {
+.Home-container .social-icons i {
   font-size: 24px;
   margin: 10px;
   cursor: pointer;
 }
 
-.social-icons i:hover {
+.Home-container .social-icons i:hover {
   opacity: 0.8;
 }
 

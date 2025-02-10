@@ -31,7 +31,7 @@ const FunctionHall = () => {
     setLoading(true);
     try {
       const response = await fetch(`http://localhost:3000/api/functionhalls/${functionHallId}/details`);
-      
+
       if (!response.ok) {
         throw new Error(`Error fetching details: ${response.status}`);
       }
@@ -107,14 +107,14 @@ const FunctionHall = () => {
       console.log("Fetching latest hall details before booking...");
       const response = await fetch(`http://localhost:3000/api/functionhalls/${functionHallId}/details`);
       const data = await response.json();
-      
+
       if (!response.ok || !data || Object.keys(data).length === 0) {
         console.error("Failed to fetch valid function hall details, cannot proceed.");
         return;
       }
 
       console.log("Navigating with updated hallDetails:", data);
-      navigate("/ConfirmBooking", { state: data });
+      navigate("/ConfirmBooking", { state: data, functionHallId: functionHallId });
     } catch (error) {
       console.error("Error fetching function hall details:", error);
     }

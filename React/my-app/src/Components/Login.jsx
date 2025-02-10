@@ -18,7 +18,7 @@ const Login = () => {
                         <div className="col-5 login-content">
                             <Routes>
                                 <Route path="/" element={<SignIn />}></Route>
-                                <Route path="ForgotPassword" element={<ForgotPassword />}></Route>
+                                {/* <Route path="ForgotPassword" element={<ForgotPassword />}></Route> */}
                                 <Route path="ResetPassword" element={<ResetPassword />}></Route>
                             </Routes>
 

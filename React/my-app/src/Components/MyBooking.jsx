@@ -6,7 +6,6 @@ const MyBooking = () => {
   const { userId } = useContext(AppContext); // Get the userId from context
   const [bookingDetails, setBookingDetails] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (userId) {
@@ -14,16 +13,16 @@ const MyBooking = () => {
       const fetchBookingDetails = async () => {
         try {
           setLoading(true);
-          const response = await fetch(`http://localhost:3000/booking/user/${userId}`);
+          const response = await fetch(`http://localhost:3000/api/bookings/user/${userId}`); // Update URL if needed
           const data = await response.json();
           
           if (response.ok) {
             setBookingDetails(data); // Assuming the response is an array of booking details
           } else {
-            setError('No bookings found');
+            setBookingDetails([]); // If no bookings, ensure it's empty array
           }
         } catch (err) {
-          setError('Error fetching booking details');
+          setBookingDetails([]); // In case of error, set empty array
         } finally {
           setLoading(false);
         }
@@ -31,10 +30,24 @@ const MyBooking = () => {
 
       fetchBookingDetails();
     } else {
-      setError('User not found');
+      setBookingDetails([]); // User not found, set empty array
       setLoading(false);
     }
   }, [userId]);
+
+  // Function to determine the status badge color
+  const getStatusClass = (status) => {
+    switch (status) {
+      case 'PENDING':
+        return 'badge bg-primary'; // Blue for Pending
+      case 'REJECTED':
+        return 'badge bg-danger'; // Red for Rejected
+      case 'ACCEPTED':
+        return 'badge bg-success'; // Green for Accepted
+      default:
+        return 'badge bg-secondary'; // Default if unknown status
+    }
+  };
 
   return (
     <div className='booking-container'>
@@ -42,21 +55,39 @@ const MyBooking = () => {
         <div className='card-body'>
           <h2 className='card-title'>My Bookings</h2>
 
-          {loading && <p>Loading booking details...</p>}
-          {error && <p className='text-danger'>{error}</p>}
-
-          {bookingDetails.length > 0 ? (
-            <div className='list-group'>
-              {bookingDetails.map((booking, index) => (
-                <div key={index} className='list-group-item'>
-                  <h5 className='mb-1'>Function Hall Name: {booking.functionHallName}</h5>
-                  <p className='mb-1'>Date: {booking.date}</p>
-                  <p className='mb-1'>Status: {booking.status}</p>
-                </div>
-              ))}
-            </div>
+          {loading ? (
+            <p>Loading booking details...</p>
           ) : (
-            !loading && <p>No bookings found.</p> // Only show this when not loading
+            bookingDetails.length > 0 ? (
+              <table className='table table-striped'>
+                <thead>
+                  <tr>
+                    <th>Function Hall Name</th>
+                    <th>Date</th>
+                    <th>Expected Guests</th>
+                    <th>Event Type</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {bookingDetails.map((booking, index) => (
+                    <tr key={index}>
+                      <td>{booking.functionHall.name}</td>
+                      <td>{booking.date}</td>
+                      <td>{booking.expectedGuest}</td>
+                      <td>{booking.eventType}</td>
+                      <td>
+                        <span className={getStatusClass(booking.bookingStatus)}>
+                          {booking.bookingStatus}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <p>No bookings found.</p> // Only show this when not loading
+            )
           )}
         </div>
       </div>

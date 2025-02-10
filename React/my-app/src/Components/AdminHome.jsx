@@ -369,7 +369,7 @@ const AdminHome = ({ setView }) => {
                 <p>No booked applicants found.</p>
               )}
             </div>
-          )};
+          )}
 
 
           {/* Function Hall View */}
@@ -377,9 +377,8 @@ const AdminHome = ({ setView }) => {
             <FunctionHall hallId={functionHallId} />
           )}
 
-          {activeView === "addFunctionHall" && (
-            <AddFunctionHall />
-          )}
+{activeView === "addFunctionHall" && <AddFunctionHall setActiveView={setActiveView} />}
+
 
 
           {/* Delete Confirmation Modal */}

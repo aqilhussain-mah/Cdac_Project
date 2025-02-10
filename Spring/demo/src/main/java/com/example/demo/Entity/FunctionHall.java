@@ -16,7 +16,7 @@ public class FunctionHall {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "hall_id")
-    private int hallId;
+    private long hallId; // Changed from int to long
 
     @Column(name = "hall_name", nullable = false)
     private String hallName;

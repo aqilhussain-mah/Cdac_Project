@@ -18,7 +18,7 @@ const Home = () => {
                     <button type="button" className="overlay-button">
                         {role === null || role === "none" ? (
                             <NavLink to="/Login" className="nav-link" activeClassName="active">
-                                Book Now
+                                Login In
                             </NavLink>
                         ) : (
                             <NavLink to="/Booking" className="nav-link" activeClassName="active">
@@ -29,19 +29,19 @@ const Home = () => {
                 </div>
 
                 <div className="card">
-                    <div id="scrolingimgs" className="carousel slide" data-bs-ride="carousel">
+                    <div id="scrolingimgs" className="carousel slide" data-bs-ride="carousel" data-bs-interval="2000">
                         <div className="carousel-inner">
                             <div className="carousel-item active">
-                                <img src="2.jpg" className="d-block w-100" alt="..." />
-                            </div>
-                            <div className="carousel-item">
                                 <img src="Welcome.jpg" className="d-block w-100" alt="..." />
                             </div>
                             <div className="carousel-item">
                                 <img src="2.jpg" className="d-block w-100" alt="..." />
                             </div>
                             <div className="carousel-item">
-                                <img src="2.jpg" className="d-block w-100" alt="..." />
+                                <img src="3.jpg" className="d-block w-100" alt="..." />
+                            </div>
+                            <div className="carousel-item">
+                                <img src="4.jpg" className="d-block w-100" alt="..." />
                             </div>
                         </div>
                         <button className="carousel-control-prev" type="button" data-bs-target="#scrolingimgs" data-bs-slide="prev">
@@ -76,11 +76,11 @@ const Home = () => {
             tristique blandit expedita lorem! Dolorum congue hac, quisque.
             Tellus molestias dui tristique.
           </p>
-          <button className="btn btn-outline-danger px-4 py-2">READ MORE</button>
+          {/* <button className="btn btn-outline-danger px-4 py-2">READ MORE</button> */}
         </div>
       </div>
     </div>
-            <footer className="footer mt-5">
+            {/* <footer className="footer mt-5">
                 <div className=" text-center">
                     <div className="row">
                         <div className="col-12 col-md-4">
@@ -113,7 +113,7 @@ const Home = () => {
                         &copy; 2025 Company Name. All Rights Reserved.
                     </p>
                 </div>
-            </footer>
+            </footer> */}
      
         </div>
         

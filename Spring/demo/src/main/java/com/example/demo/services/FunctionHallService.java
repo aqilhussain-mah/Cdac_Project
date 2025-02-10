@@ -30,8 +30,8 @@ public class FunctionHallService {
         return functionHallRepository.findByState(stateName);
     }
 
-    // Get details of a FunctionHall by state and hallId
-    public FunctionHall getFunctionHallDetails(int hallId) {
+    // Get details of a FunctionHall by hallId
+    public FunctionHall getFunctionHallDetails(long hallId) { // Changed int to long
         return functionHallRepository.findById(hallId).orElse(null);
     }
 
@@ -76,12 +76,12 @@ public class FunctionHallService {
     public List<FunctionHall> getFunctionHallsByAdminId(long adminId) {
         return functionHallRepository.findByAdmin_Id(adminId);
     }
+
     public FunctionHall saveFunctionHall(FunctionHall functionHall) {
         return functionHallRepository.save(functionHall);
     }
 
-    
-    public void deleteFunctionHall(int hallId) {
+    public void deleteFunctionHall(long hallId) { // Changed int to long
         Optional<FunctionHall> functionHall = functionHallRepository.findById(hallId);
         if (functionHall.isPresent()) {
             functionHallRepository.delete(functionHall.get());
@@ -89,26 +89,22 @@ public class FunctionHallService {
             throw new RuntimeException("Function hall not found with ID: " + hallId);
         }
     }
-    
-    
+
     public FunctionHall updateFunctionHall(FunctionHall updatedData) {
-      //  Optional<FunctionHall> existingHall = functionHallRepository.findById(updatedData.getHallId());
-    	FunctionHall existingHall=functionHallRepository.findByHallId(updatedData.getHallId());
+        FunctionHall existingHall = functionHallRepository.findByHallId(updatedData.getHallId());
 
-        if (existingHall!=null) {
-          //  FunctionHall functionHall = existingHall.get();
-
+        if (existingHall != null) {
             // Update each property only if it's provided (non-null/non-empty)
             if (updatedData.getHallName() != null && !updatedData.getHallName().isEmpty()) {
-            	existingHall.setHallName(updatedData.getHallName());
+                existingHall.setHallName(updatedData.getHallName());
             }
 
             if (updatedData.getLocation() != null && !updatedData.getLocation().isEmpty()) {
-            	existingHall.setLocation(updatedData.getLocation());
+                existingHall.setLocation(updatedData.getLocation());
             }
 
             if (updatedData.getState() != null && !updatedData.getState().isEmpty()) {
-            	existingHall.setState(updatedData.getState());
+                existingHall.setState(updatedData.getState());
             }
 
             return functionHallRepository.save(existingHall); // Save updated function hall
@@ -116,5 +112,4 @@ public class FunctionHallService {
             throw new RuntimeException("Function hall not found.");
         }
     }
-
 }

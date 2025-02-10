@@ -36,6 +36,7 @@ public class UsersService {
     }
 
 
+
     
     public Users updateAdminDetails(Users updatedData) {
         Optional<Users> existingUser = userRepository.findById(updatedData.getId());

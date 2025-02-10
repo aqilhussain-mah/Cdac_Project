@@ -33,10 +33,10 @@ const SignIn = () => {
         alert("Invalid username or password");
       }
       if(response.data.role === "user"){
-        navigate("/");
+        navigate("/"); // Navigate to the home page for user
       }
       if(response.data.role === "admin"){
-        navigate("/adminhome");
+        navigate("/adminhome"); // Navigate to the admin home page
       }
     }catch (error) {
       if (error.response && error.response.status === 401) {
@@ -46,16 +46,15 @@ const SignIn = () => {
         alert("An error occurred while logging in.");
       }
     }
-
   };
 
   return (
     <div className="signin-container">
       <div className="container-fluid">
         <form onSubmit={handleSubmit}>
-          <h1>Sign In</h1>
+          <h1 >Sign In</h1>
           <div>
-            <label htmlFor="">USERNAME</label><br />
+            <label htmlFor="" className="">USERNAME</label><br />
             <input
               type="text"
               name="username"
@@ -96,15 +95,15 @@ const SignIn = () => {
                 Reset password
               </NavLink>
             </div>
-            <div className="col d-flex justify-content-end text-end">
+            {/* <div className="col d-flex justify-content-end text-end">
               <NavLink
                 to="ForgotPassword"
                 className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}
               >
                 Forgot password
               </NavLink>
-            </div>
-          </div>
+            </div> */}
+          </div> 
           <div className="d-flex justify-content-center mt-3">
             <NavLink
               to="/Register"
@@ -123,3 +122,4 @@ const SignIn = () => {
 };
 
 export default SignIn;
+ 
